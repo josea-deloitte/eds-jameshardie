@@ -1,0 +1,12 @@
+{
+  "sites": {
+    "eds-jameshardie": {
+      "previewOrg": "josea-deloitte",
+      "previewSite": "eds-jameshardie",
+      "contentHostUrl": "https://content.da.live/josea-deloitte/eds-jameshardie/"
+    }
+  },
+  "features": [
+    "site-planning"
+  ]
+}

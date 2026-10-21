@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>James Hardie → AEM Edge Delivery Services | Migration Scope &amp; Timeline</title>
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-0: #f4f3f0;
+    --surface-1: #fcfcfb;
+    --border: #e2e1dc;
+    --grid: #ecebe7;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #77766f;
+    --accent: #2a78d6;
+    --series-1: #2a78d6;
+    --series-2: #eb6834;
+    --series-3: #1baf7a;
+    --series-4: #eda100;
+    --series-5: #e87ba4;
+    --series-6: #008300;
+    --series-7: #4a3aa7;
+    --series-8: #e34948;
+    --status-good: #1a7f37;
+    --status-warning: #9a6700;
+    --status-critical: #c62828;
+    --chip-bg: #f0efec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-0: #111110;
+      --surface-1: #1a1a19;
+      --border: #33332f;
+      --grid: #2a2a27;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted: #9a998f;
+      --accent: #3987e5;
+      --series-1: #3987e5;
+      --series-2: #d95926;
+      --series-3: #199e70;
+      --series-4: #c98500;
+      --series-5: #d55181;
+      --series-6: #008300;
+      --series-7: #9085e9;
+      --series-8: #e66767;
+      --status-good: #4ac26b;
+      --status-warning: #d29922;
+      --status-critical: #f47067;
+      --chip-bg: #2a2a27;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-0: #111110;
+    --surface-1: #1a1a19;
+    --border: #33332f;
+    --grid: #2a2a27;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #9a998f;
+    --accent: #3987e5;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+    --series-7: #9085e9;
+    --series-8: #e66767;
+    --status-good: #4ac26b;
+    --status-warning: #d29922;
+    --status-critical: #f47067;
+    --chip-bg: #2a2a27;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  .viz-root {
+    background: var(--surface-0);
+    color: var(--text-primary);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 24px 64px; }
+  header.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0 0 6px; }
+  h2 { font-size: 20px; margin: 0 0 4px; }
+  h3 { font-size: 16px; margin: 20px 0 8px; }
+  p.lede, .sub { color: var(--text-secondary); margin: 0; }
+  .meta { color: var(--text-muted); font-size: 13px; margin-top: 6px; }
+  .theme-toggle { border: 1px solid var(--border); background: var(--surface-1); color: var(--text-primary); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 13px; }
+  nav.toc { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 8px; }
+  nav.toc a { color: var(--text-secondary); text-decoration: none; font-size: 13px; padding: 4px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface-1); }
+  nav.toc a:hover { color: var(--text-primary); border-color: var(--text-muted); }
+
+  section.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-top: 20px; }
+  .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+
+  /* stat tiles */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 12px; margin-top: 20px; }
+  .tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .tile .label { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--text-secondary); }
+  .tile .value { font-size: 32px; font-weight: 650; line-height: 1.15; margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
+  .tile .note { font-size: 12.5px; color: var(--text-muted); }
+
+  /* tables */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--text-secondary); font-weight: 600; border-bottom: 1px solid var(--border); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tfoot td { font-weight: 650; border-top: 1px solid var(--border); border-bottom: 0; }
+  code { font: 12.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--chip-bg); padding: 1px 5px; border-radius: 4px; }
+  .chip { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 999px; background: var(--chip-bg); color: var(--text-secondary); margin: 1px 2px 1px 0; white-space: nowrap; }
+  .lvl { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; white-space: nowrap; color: var(--text-primary); }
+  .lvl::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .lvl.low::before { background: var(--status-good); }
+  .lvl.med::before { background: var(--status-warning); }
+  .lvl.high::before { background: var(--status-critical); }
+  .muted { color: var(--text-muted); }
+
+  /* bar chart */
+  .bars { display: grid; grid-template-columns: minmax(150px, 190px) 1fr 52px; gap: 6px 12px; align-items: center; }
+  .bars .name { font-size: 13.5px; color: var(--text-primary); }
+  .bars .track { position: relative; height: 22px; background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px); background-size: 20% 100%; }
+  .bars .bar { height: 100%; background: var(--series-1); border-radius: 0 4px 4px 0; min-width: 3px; cursor: default; }
+  .bars .bar:hover { filter: brightness(1.1); }
+  .bars .val { font-size: 13px; color: var(--text-secondary); font-variant-numeric: tabular-nums; text-align: right; }
+  .axis-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+
+  /* gantt */
+  .gantt { --weeks: 16; display: grid; grid-template-columns: minmax(200px, 240px) 1fr; gap: 0; font-size: 13px; }
+  .gantt .hdr { display: grid; grid-template-columns: repeat(var(--weeks), 1fr); border-bottom: 1px solid var(--border); }
+  .gantt .hdr span { text-align: center; color: var(--text-muted); font-size: 11.5px; padding: 4px 0; font-variant-numeric: tabular-nums; }
+  .gantt .rowlabel { padding: 8px 10px 8px 0; border-bottom: 1px solid var(--grid); display: flex; align-items: center; gap: 8px; }
+  .gantt .swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .gantt .lane { position: relative; border-bottom: 1px solid var(--grid); background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px); background-size: calc(100% / var(--weeks)) 100%; min-height: 38px; }
+  .gantt .seg { position: absolute; top: 9px; height: 20px; border-radius: 4px; cursor: default; box-shadow: 0 0 0 2px var(--surface-1); }
+  .gantt .seg:hover { filter: brightness(1.1); }
+  .gantt .ms { position: absolute; top: 4px; width: 12px; height: 12px; transform: translateX(-6px) rotate(45deg); background: var(--text-primary); border: 2px solid var(--surface-1); cursor: default; }
+  .gantt .mslane { min-height: 30px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 4px 0 14px; font-size: 13px; color: var(--text-secondary); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+  .tooltip { position: fixed; pointer-events: none; z-index: 10; background: var(--surface-1); color: var(--text-primary); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; box-shadow: 0 6px 20px rgba(0,0,0,.15); max-width: 300px; opacity: 0; transition: opacity .08s; }
+  .tooltip strong { display: block; margin-bottom: 2px; }
+  .tooltip .tt-sub { color: var(--text-secondary); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 860px) { .two-col { grid-template-columns: 1fr; } .gantt { grid-template-columns: 140px 1fr; } }
+  ul.tight { margin: 6px 0 0; padding-left: 18px; }
+  ul.tight li { margin: 3px 0; }
+  .callout { border-left: 3px solid var(--accent); background: var(--chip-bg); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0 0; color: var(--text-secondary); font-size: 14px; }
+  footer.foot { color: var(--text-muted); font-size: 12.5px; margin-top: 28px; }
+  @media print { .theme-toggle, nav.toc { display: none; } section.card { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+
+<header class="top">
+  <div>
+    <h1>James Hardie — AEM Edge Delivery Services migration scope</h1>
+    <p class="lede">Site analysis, block &amp; integration inventory, effort estimate and tentative timeline for <strong>www.jameshardie.com</strong></p>
+    <div class="meta">Analysis date: 20 Oct 2026 · Source: sitemap.xml (299 URLs) · Current platform: Next.js + Contentful · Target: AEM EDS with Document Authoring (DA)</div>
+  </div>
+  <button class="theme-toggle" type="button" id="themeToggle">Toggle dark / light</button>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <a href="#summary">Summary</a><a href="#pages">Pages &amp; templates</a><a href="#blocks">Blocks</a><a href="#elements">Global elements</a><a href="#apis">APIs &amp; integrations</a><a href="#effort">Effort</a><a href="#timeline">Timeline</a><a href="#risks">Risks</a>
+</nav>
+
+<!-- ============ SUMMARY ============ -->
+<div class="tiles" id="summary">
+  <div class="tile"><div class="label">Pages</div><div class="value">299</div><div class="note">293 analyzed (98%) · 1 locale (en) + Weglot ES</div></div>
+  <div class="tile"><div class="label">Page templates</div><div class="value">9</div><div class="note">2 templates cover 76% of pages</div></div>
+  <div class="tile"><div class="label">EDS blocks to build</div><div class="value">28</div><div class="note">~55 variants · consolidated from 177 detected</div></div>
+  <div class="tile"><div class="label">Elements detected</div><div class="value">2,248</div><div class="note">block instances across all pages</div></div>
+  <div class="tile"><div class="label">API connections</div><div class="value">26</div><div class="note">12 first-party endpoints · 14 third-party services</div></div>
+  <div class="tile"><div class="label">Martech tags</div><div class="value">~27</div><div class="note">analytics, ads &amp; tracking (via GTM)</div></div>
+  <div class="tile"><div class="label">Duration (weeks)</div><div class="value">16</div><div class="note">~290 person-days · 6–7 person team</div></div>
+</div>
+
+<!-- ============ PAGES ============ -->
+<section class="card" id="pages">
+  <div class="section-head">
+    <div><h2>Pages &amp; templates</h2><p class="sub">Pages grouped by layout similarity. Each template becomes one import script.</p></div>
+  </div>
+
+  <h3>Pages per template</h3>
+  <div class="bars" id="templateBars" role="img" aria-label="Horizontal bar chart of pages per template; values are listed in the table below"></div>
+  <div class="axis-note">Gridlines every 23 pages · scale 0–115 · 6 pages not analyzed are listed separately below</div>
+
+  <h3>Template inventory</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Template</th><th class="num">Pages</th><th class="num">Avg blocks / page</th><th>Main blocks</th><th>Example URLs</th><th>Complexity</th></tr></thead>
+    <tbody>
+      <tr><td><strong>blog-article</strong><br><span class="muted">Title hero + rich-text body, inline images, embeds</span></td><td class="num">114</td><td class="num">5.2</td><td><span class="chip">hero</span><span class="chip">embed</span><span class="chip">columns</span><span class="chip">default content</span></td><td><code>/blog/explore-exterior-design/*</code><br><code>/blog/for-siding-pros/*</code></td><td><span class="lvl low">Low</span></td></tr>
+      <tr><td><strong>product-detail</strong><br><span class="muted">Hero, card grids, spec table, FAQ accordion, carousels</span></td><td class="num">113</td><td class="num">9.6</td><td><span class="chip">hero</span><span class="chip">cards</span><span class="chip">accordion</span><span class="chip">table</span><span class="chip">carousel</span><span class="chip">columns</span></td><td><code>/product-catalog/exterior-siding-products/*</code><br><code>/product-catalog/trim-products/*</code></td><td><span class="lvl high">High</span> <span class="muted">zip-aware color &amp; spec APIs</span></td></tr>
+      <tr><td><strong>content-landing</strong><br><span class="muted">Hero + alternating columns, carousels, CTA band</span></td><td class="num">32</td><td class="num">8.8</td><td><span class="chip">hero</span><span class="chip">cards</span><span class="chip">columns</span><span class="chip">carousel</span><span class="chip">video</span><span class="chip">tabs</span></td><td><code>/why-james-hardie/*</code><br><code>/color-design-guidance/*</code></td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td><strong>lead-gen-form</strong><br><span class="muted">Intro cards, long copy, embedded form, confirmations</span></td><td class="num">15</td><td class="num">8.2</td><td><span class="chip">hero</span><span class="chip">cards</span><span class="chip">form</span><span class="chip">embed</span></td><td><code>/request-builder-toolkit/</code><br><code>/form-confirmation/</code></td><td><span class="lvl med">Medium</span> <span class="muted">Marketo</span></td></tr>
+      <tr><td><strong>campaign-landing</strong><br><span class="muted">Video hero, tabbed media, card grids, carousel</span></td><td class="num">12</td><td class="num">10.2</td><td><span class="chip">video</span><span class="chip">tabs</span><span class="chip">cards</span><span class="chip">carousel</span><span class="chip">embed</span></td><td><code>/</code> (homepage)<br><code>/color-of-the-year/</code></td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td><strong>contact-form</strong><br><span class="muted">Hero, benefit columns, primary form</span></td><td class="num">4</td><td class="num">6.5</td><td><span class="chip">hero</span><span class="chip">columns</span><span class="chip">form</span></td><td><code>/contact-james-hardie/</code><br><code>/get-an-estimate/</code></td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td><strong>product-launch</strong></td><td class="num">1</td><td class="num">11</td><td><span class="chip">video</span><span class="chip">cards</span><span class="chip">carousel</span></td><td><code>/hardie-backer-pro-cement-board/</code></td><td><span class="lvl low">Low</span> <span class="muted">manual</span></td></tr>
+      <tr><td><strong>campaign-microsite</strong></td><td class="num">1</td><td class="num">9</td><td><span class="chip">video</span><span class="chip">tabs</span><span class="chip">carousel</span></td><td><code>/impeckablehouse/</code></td><td><span class="lvl low">Low</span> <span class="muted">manual</span></td></tr>
+      <tr><td><strong>system-status</strong></td><td class="num">1</td><td class="num">1</td><td><span class="chip">hero</span></td><td><code>/status/maintenance/</code></td><td><span class="lvl low">Low</span></td></tr>
+    </tbody>
+    <tfoot><tr><td>Analyzed total</td><td class="num">293</td><td class="num">7.7</td><td colspan="3"></td></tr></tfoot>
+  </table>
+  </div>
+
+  <h3>Pages not analyzed (6) — build manually as application pages</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>URL</th><th>Reason</th><th>Plan</th></tr></thead>
+    <tbody>
+      <tr><td><code>/request-a-quote/</code></td><td>Bot protection (HTTP 403)</td><td>quote-request block + <code>submitQuote</code> API</td></tr>
+      <tr><td><code>/request-siding-quote/</code></td><td>Bot protection (HTTP 403)</td><td>quote-request block (variant)</td></tr>
+      <tr><td><code>/hardie-designer/</code></td><td>Bot protection (HTTP 403)</td><td>hardie-designer block (Hover embed)</td></tr>
+      <tr><td><code>/find-a-contractor/results/</code></td><td>Bot protection (HTTP 403) — dynamic results</td><td>contractor-finder block (results mode)</td></tr>
+      <tr><td><code>/find-a-contractor/results/request-a-quote/</code></td><td>Timeout — dynamic page</td><td>quote-request block (contractor context)</td></tr>
+      <tr><td><code>/not-found/</code></td><td>404 page</td><td>EDS <code>404.html</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ BLOCKS ============ -->
+<section class="card" id="blocks">
+  <div class="section-head">
+    <div><h2>Blocks</h2><p class="sub">177 visual variants detected on the source. Similar variants are merged into one EDS block with a few variants.</p></div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h3>Detected on source site</h3>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th class="num">Variants</th><th class="num">Instances</th></tr></thead>
+        <tbody>
+          <tr><td>cards</td><td class="num">17</td><td class="num">358</td></tr>
+          <tr><td>hero</td><td class="num">23</td><td class="num">338</td></tr>
+          <tr><td>columns</td><td class="num">27</td><td class="num">153</td></tr>
+          <tr><td>carousel</td><td class="num">23</td><td class="num">119</td></tr>
+          <tr><td>accordion</td><td class="num">1</td><td class="num">106</td></tr>
+          <tr><td>embed</td><td class="num">3</td><td class="num">80</td></tr>
+          <tr><td>table</td><td class="num">9</td><td class="num">51</td></tr>
+          <tr><td>video</td><td class="num">16</td><td class="num">50</td></tr>
+          <tr><td>tabs</td><td class="num">15</td><td class="num">28</td></tr>
+          <tr><td>form</td><td class="num">7</td><td class="num">20</td></tr>
+          <tr><td>search</td><td class="num">2</td><td class="num">2</td></tr>
+          <tr><td>header / footer</td><td class="num">2</td><td class="num">global</td></tr>
+          <tr><td>unclassified <span class="muted">(mostly heading + text + CTA → default content)</span></td><td class="num">32</td><td class="num">943</td></tr>
+        </tbody>
+        <tfoot><tr><td>Total</td><td class="num">177</td><td class="num">2,248</td></tr></tfoot>
+      </table>
+      </div>
+    </div>
+    <div>
+      <h3>Consolidation</h3>
+      <p class="sub">Most unclassified sections are headings, paragraphs and buttons. EDS authors these as <strong>default content</strong>, so they don't need custom blocks. The repo already includes boilerplate <code>hero</code>, <code>cards</code>, <code>columns</code>, <code>header</code>, <code>footer</code> and <code>fragment</code>.</p>
+      <div class="tiles" style="grid-template-columns:repeat(2,1fr)">
+        <div class="tile"><div class="label">Standard blocks</div><div class="value">16</div><div class="note">~40 variants</div></div>
+        <div class="tile"><div class="label">Custom / integration</div><div class="value">12</div><div class="note">~15 variants, API-driven</div></div>
+      </div>
+      <div class="callout">The product-detail template is the highest-risk area. Its colors, variants and specs are loaded live from zip-aware APIs, not from page content.</div>
+    </div>
+  </div>
+
+  <h3>Proposed EDS block library (28)</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>#</th><th>Block</th><th>Variants</th><th>Used on</th><th>Data / integration</th><th>Complexity</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>header</strong> (mega-nav)</td><td>desktop / mobile, search, locale, zip</td><td>global</td><td>Algolia, Weglot, geo APIs</td><td><span class="lvl high">High</span></td></tr>
+      <tr><td>2</td><td><strong>footer</strong></td><td>1</td><td>global</td><td>—</td><td><span class="lvl low">Low</span></td></tr>
+      <tr><td>3</td><td><strong>announcement-banner</strong></td><td>1</td><td>global</td><td>replaces <code>getAnnouncementBannerData</code> with a DA fragment</td><td><span class="lvl low">Low</span></td></tr>
+      <tr><td>4</td><td><strong>hero</strong></td><td>5 — default, image-bg, video-bg, split, compact</td><td>all templates</td><td>—</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td>5</td><td><strong>cards</strong></td><td>5 — image, icon, article, product, swatch</td><td>PDP, landing</td><td>—</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td>6</td><td><strong>columns</strong></td><td>5 — media-text, alternating, stats, benefits, 3-up</td><td>landing, PDP</td><td>—</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td>7</td><td><strong>carousel</strong></td><td>4 — hero, product, testimonial, gallery</td><td>PDP, landing</td><td>—</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td>8</td><td><strong>tabs</strong></td><td>3</td><td>campaign, landing</td><td>—</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td>9</td><td><strong>video</strong></td><td>3 — inline, background, modal</td><td>campaign, landing</td><td>YouTube</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td>10</td><td><strong>table</strong></td><td>2 — spec, comparison</td><td>PDP</td><td>—</td><td><span class="lvl low">Low</span></td></tr>
+      <tr><td>11</td><td><strong>accordion</strong></td><td>2 — FAQ, details</td><td>PDP, FAQ</td><td>—</td><td><span class="lvl low">Low</span></td></tr>
+      <tr><td>12</td><td><strong>embed</strong></td><td>3 — YouTube, social gallery, iframe</td><td>blog, landing</td><td>Sprinklr, noembed</td><td><span class="lvl low">Low</span></td></tr>
+      <tr><td>13</td><td><strong>cta-banner</strong></td><td>2</td><td>all</td><td>—</td><td><span class="lvl low">Low</span></td></tr>
+      <tr><td>14</td><td><strong>quote / testimonial</strong></td><td>1</td><td>landing</td><td>—</td><td><span class="lvl low">Low</span></td></tr>
+      <tr><td>15</td><td><strong>breadcrumbs</strong> (auto-block)</td><td>1</td><td>PDP, blog</td><td>—</td><td><span class="lvl low">Low</span></td></tr>
+      <tr><td>16</td><td><strong>fragment</strong> (exists)</td><td>1</td><td>reusable sections</td><td>—</td><td><span class="lvl low">Low</span></td></tr>
+      <tr><td>17</td><td><strong>form-marketo</strong></td><td>2 — inline, gated download</td><td>lead-gen, contact</td><td>Marketo Forms 2, reCAPTCHA</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td>18</td><td><strong>quote-request</strong></td><td>2 — multi-step, contractor</td><td>estimate / quote pages</td><td><code>submitQuote</code>, Google Maps, reCAPTCHA</td><td><span class="lvl high">High</span></td></tr>
+      <tr><td>19</td><td><strong>search-results</strong></td><td>1</td><td><code>/search/</code></td><td>Algolia InstantSearch</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td>20</td><td><strong>dealer-locator</strong></td><td>1</td><td><code>/find-dealer-near-you/</code></td><td>Google Maps, Geocoding, Algolia</td><td><span class="lvl high">High</span></td></tr>
+      <tr><td>21</td><td><strong>contractor-finder</strong></td><td>2 — search, results</td><td><code>/find-a-contractor/*</code></td><td>Google Maps, contractor API</td><td><span class="lvl high">High</span></td></tr>
+      <tr><td>22</td><td><strong>product-colors</strong></td><td>2 — collection, statement</td><td>113 PDP</td><td>4 color APIs (zip-aware)</td><td><span class="lvl high">High</span></td></tr>
+      <tr><td>23</td><td><strong>product-specs</strong></td><td>1</td><td>113 PDP</td><td><code>techSpecsByVariantAndProduct</code></td><td><span class="lvl high">High</span></td></tr>
+      <tr><td>24</td><td><strong>product-variants</strong></td><td>1</td><td>113 PDP</td><td><code>getVariantListByProductIdAndZip</code></td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td>25</td><td><strong>tech-docs-library</strong></td><td>1</td><td><code>/installation-instructions-technical-docs/</code></td><td><code>techDocsProducts</code>, <code>techDocsResults</code></td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td>26</td><td><strong>hardie-designer</strong></td><td>1</td><td><code>/hardie-designer/</code></td><td>Hover visualizer embed</td><td><span class="lvl low">Low</span></td></tr>
+      <tr><td>27</td><td><strong>article-list</strong></td><td>2 — category, related</td><td>blog index + 7 categories</td><td>EDS query-index</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td>28</td><td><strong>color-gallery</strong></td><td>1</td><td>collection color pages</td><td>color APIs / spreadsheet</td><td><span class="lvl med">Medium</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ ELEMENTS ============ -->
+<section class="card" id="elements">
+  <div class="section-head"><div><h2>Global elements &amp; site features</h2><p class="sub">Elements that appear on every page, plus site-level features that must carry over.</p></div></div>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Element</th><th>Source behaviour</th><th>EDS approach</th></tr></thead>
+    <tbody>
+      <tr><td>Header / mega-navigation</td><td>Multi-level menu with 6 features: search, locale globe, "Where to Buy", zip detection, mobile drawer</td><td><code>nav</code> document in DA + custom header block</td></tr>
+      <tr><td>Footer</td><td>Link columns, social icons (YouTube, Facebook, Instagram, Pinterest, Houzz, LinkedIn)</td><td><code>footer</code> document in DA</td></tr>
+      <tr><td>Announcement banner</td><td>API-driven site-wide banner</td><td>DA fragment, so authors can edit it</td></tr>
+      <tr><td>Geo / zip personalization</td><td>IP location → zip; drives product colors &amp; dealer results</td><td>Client-side geo service + cached zip in localStorage</td></tr>
+      <tr><td>Cookie consent</td><td>OneTrust</td><td>Load in <code>delayed.js</code>; gate tags by consent</td></tr>
+      <tr><td>Translation (Spanish)</td><td>Weglot machine translation</td><td>Keep Weglot or move to a DA <code>/es/</code> locale tree (decision needed)</td></tr>
+      <tr><td>Chat</td><td>Intercom messenger</td><td>Lazy-load after user interaction</td></tr>
+      <tr><td>Feature flags / A-B tests</td><td>Split.io, Amplitude Experiment</td><td>EDS experimentation plugin, or keep Split.io client-side</td></tr>
+      <tr><td>Images &amp; media</td><td>Served from Contentful CDN (<code>images.ctfassets.net</code>)</td><td>Ingest into DA media during import</td></tr>
+      <tr><td>SEO</td><td>299 URLs with trailing slashes, metadata from Contentful</td><td>Metadata blocks, redirects sheet, sitemap, canonical rules</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ APIS ============ -->
+<section class="card" id="apis">
+  <div class="section-head"><div><h2>APIs &amp; integrations</h2><p class="sub">Captured from live network traffic on 14 representative pages.</p></div></div>
+
+  <div class="callout"><strong>Key finding:</strong> the 12 first-party endpoints are Next.js API routes (<code>/api/*</code>). They stop working when the Next.js app is retired. Before integration work starts, they need a new home: Adobe App Builder / I/O Runtime, an edge worker, or the existing backend kept on an API subdomain.</div>
+
+  <h3>First-party APIs (12)</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Endpoint</th><th>Method</th><th>Purpose</th><th>Consumer block</th><th>Effort</th></tr></thead>
+    <tbody>
+      <tr><td><code>/api/getAnnouncementBannerData</code></td><td>GET</td><td>Site-wide banner content</td><td>announcement-banner</td><td><span class="lvl low">Low</span> <span class="muted">replace with DA</span></td></tr>
+      <tr><td><code>/api/getIPLocation</code></td><td>GET</td><td>Visitor geo-location</td><td>header, PDP, locators</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td><code>/api/getZipFromGeocode</code></td><td>GET</td><td>Coordinates → zip code</td><td>header, locators</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td><code>/api/submitQuote</code></td><td>GET/POST</td><td>Quote / estimate submission</td><td>quote-request</td><td><span class="lvl high">High</span></td></tr>
+      <tr><td><code>/api/techDocsProducts</code></td><td>GET</td><td>Product filter list for docs</td><td>tech-docs-library</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td><code>/api/techDocsResults</code></td><td>POST</td><td>Technical document search</td><td>tech-docs-library</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td><code>/api/techSpecsByVariantAndProduct</code></td><td>POST</td><td>Product specifications</td><td>product-specs</td><td><span class="lvl high">High</span></td></tr>
+      <tr><td><code>/api/getVariantListByProductIdAndZip</code></td><td>POST</td><td>Product variants by region</td><td>product-variants</td><td><span class="lvl high">High</span></td></tr>
+      <tr><td><code>/api/getAllColorCollectionByVariantAndZip</code></td><td>POST</td><td>Color collections by region</td><td>product-colors</td><td><span class="lvl high">High</span></td></tr>
+      <tr><td><code>/api/colorCollectionsByCollectionIds</code></td><td>POST</td><td>Color collection details</td><td>product-colors, color-gallery</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td><code>/api/getColorsByColorCollectionsIdForPDP</code></td><td>POST</td><td>Swatches for the PDP</td><td>product-colors</td><td><span class="lvl med">Medium</span></td></tr>
+      <tr><td><code>/api/getStatementColorsByProductAndVariant</code></td><td>POST</td><td>Statement Collection colors</td><td>product-colors</td><td><span class="lvl med">Medium</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Third-party functional services (14)</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Service</th><th>Used for</th><th>EDS approach</th></tr></thead>
+    <tbody>
+      <tr><td>Contentful</td><td>Current CMS: page content, product data, assets</td><td>Migration source; product data may stay as an API source</td></tr>
+      <tr><td>Marketo (Forms 2 + Munchkin, <code>lp-new.jameshardie.com</code>)</td><td>Lead forms, gated downloads, tracking</td><td>form-marketo block; Munchkin in <code>delayed.js</code></td></tr>
+      <tr><td>Algolia</td><td>Site search, dealer index</td><td>search-results + dealer-locator blocks</td></tr>
+      <tr><td>Google Maps Platform</td><td>Maps JS, Geocoding</td><td>dealer-locator, contractor-finder, quote-request</td></tr>
+      <tr><td>Google reCAPTCHA</td><td>Form protection</td><td>form blocks</td></tr>
+      <tr><td>Cloudflare (bot management / Turnstile)</td><td>Bot protection: blocked 4 pages during analysis</td><td>Allow-list the import crawler; CDN config at go-live</td></tr>
+      <tr><td>Hover</td><td>Hardie Designer home visualizer (<code>graph.hover.to</code>)</td><td>hardie-designer embed block</td></tr>
+      <tr><td>Weglot</td><td>Spanish translation</td><td>Keep, or replace with DA localization</td></tr>
+      <tr><td>OneTrust</td><td>Cookie consent</td><td>delayed load, consent-gated tags</td></tr>
+      <tr><td>Intercom</td><td>Chat messenger</td><td>lazy load</td></tr>
+      <tr><td>Split.io</td><td>Feature flags</td><td>keep client-side or use EDS experimentation</td></tr>
+      <tr><td>Sprinklr</td><td>Social / UGC gallery</td><td>embed block</td></tr>
+      <tr><td>Adobe I/O Runtime app ("hummingbird")</td><td>Activation, style settings, localization widget</td><td>Confirm owner &amp; purpose with client</td></tr>
+      <tr><td>YouTube / noembed</td><td>Video embeds</td><td>video &amp; embed blocks</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Analytics &amp; marketing tags (~27)</h3>
+  <p class="sub">Load all of these through GTM in <code>delayed.js</code>, gated by consent, to protect Lighthouse scores. Review with the client before launch and remove any duplicate or unused tags.</p>
+  <p style="margin-top:8px">
+    <span class="chip">Google Tag Manager</span><span class="chip">GA4</span><span class="chip">Google Ads / Floodlight</span><span class="chip">Meta Pixel</span><span class="chip">Pinterest</span><span class="chip">Bing UET</span><span class="chip">Microsoft Clarity</span><span class="chip">Hotjar</span><span class="chip">Amplitude</span><span class="chip">Segment</span><span class="chip">New Relic</span><span class="chip">Sentry</span><span class="chip">Nextdoor</span><span class="chip">Taboola</span><span class="chip">The Trade Desk</span><span class="chip">LeadsRx</span><span class="chip">Leadfeeder</span><span class="chip">TVSquared</span><span class="chip">Conversant (Dotomi)</span><span class="chip">Resonate</span><span class="chip">Dstillery</span><span class="chip">Beeswax</span><span class="chip">Knotch</span><span class="chip">ABCS Insights</span><span class="chip">Vault DCR</span><span class="chip">X / Twitter</span><span class="chip">Google Syndication</span>
+  </p>
+</section>
+
+<!-- ============ EFFORT ============ -->
+<section class="card" id="effort">
+  <div class="section-head"><div><h2>Effort estimate</h2><p class="sub">Person-days, assuming an experienced EDS team. Accuracy ±20% until the API strategy is decided.</p></div></div>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Workstream</th><th>Scope</th><th class="num">Person-days</th></tr></thead>
+    <tbody>
+      <tr><td>Discovery &amp; setup</td><td>Project setup, DA content source, environments, API strategy decision, analytics plan</td><td class="num">12</td></tr>
+      <tr><td>Design system &amp; global elements</td><td>Design tokens, typography, fonts; header mega-nav, footer, announcement banner</td><td class="num">20</td></tr>
+      <tr><td>Standard block library</td><td>16 blocks, ~40 variants, including responsive and accessibility work</td><td class="num">40</td></tr>
+      <tr><td>Custom blocks &amp; integrations</td><td>12 API-driven blocks; re-hosting 12 first-party endpoints; Marketo, Algolia, Maps, Hover</td><td class="num">80</td></tr>
+      <tr><td>Import &amp; content migration</td><td>9 import scripts, bulk import of 293 pages, manual build of 6 app pages, media ingest, content QA</td><td class="num">45</td></tr>
+      <tr><td>Martech, SEO &amp; performance</td><td>GTM/consent, redirects, metadata, sitemap, Lighthouse &amp; Core Web Vitals tuning</td><td class="num">20</td></tr>
+      <tr><td>QA &amp; UAT</td><td>Visual regression, cross-browser, accessibility, author training, UAT fixes</td><td class="num">35</td></tr>
+      <tr><td>Launch &amp; hypercare</td><td>DNS/CDN cut-over, monitoring, 2-week hypercare</td><td class="num">10</td></tr>
+      <tr><td>Project management</td><td>~10% overhead</td><td class="num">28</td></tr>
+    </tbody>
+    <tfoot><tr><td>Total</td><td></td><td class="num">290</td></tr></tfoot>
+  </table>
+  </div>
+  <p class="sub" style="margin-top:12px">Suggested team: 1 tech lead / architect, 3 EDS front-end developers, 1 integration (backend) developer, 1 QA engineer, 1 content author, part-time PM.</p>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section class="card" id="timeline">
+  <div class="section-head"><div><h2>Tentative timeline — 16 weeks</h2><p class="sub">Workstreams overlap. Week 1 = project kickoff. Diamonds are milestones.</p></div></div>
+  <div class="gantt" id="gantt" role="img" aria-label="Gantt chart of 8 workstreams over 16 weeks; the same data is in the table below"></div>
+
+  <h3>Phase plan</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Workstream</th><th class="num">Weeks</th><th>Key deliverables</th></tr></thead>
+    <tbody id="ganttTable"></tbody>
+  </table>
+  </div>
+
+  <h3>Milestones</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th class="num">Week</th><th>Milestone</th></tr></thead>
+    <tbody id="msTable"></tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============ RISKS ============ -->
+<section class="card" id="risks">
+  <div class="section-head"><div><h2>Risks &amp; open decisions</h2></div></div>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Risk / decision</th><th>Impact</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td>Next.js API routes go away with the old platform</td><td><span class="lvl high">High</span></td><td>Decide on a hosting target (App Builder, edge worker or existing backend) in week 1–2; proxy through the CDN</td></tr>
+      <tr><td>Product pages depend on live, zip-aware data</td><td><span class="lvl high">High</span></td><td>Static content in DA; colors, specs and variants rendered client-side by product-* blocks; cache responses</td></tr>
+      <tr><td>Bot protection blocks crawling and import</td><td><span class="lvl med">Medium</span></td><td>Allow-list import IPs or user-agent; manual capture of 6 app pages</td></tr>
+      <tr><td>Spanish translation (Weglot) strategy</td><td><span class="lvl med">Medium</span></td><td>Client decision: keep Weglot, or add a localized DA tree (adds ~3 weeks if full localization)</td></tr>
+      <tr><td>~27 marketing tags hurt performance</td><td><span class="lvl med">Medium</span></td><td>Tag audit; load via <code>delayed.js</code>; consent gating</td></tr>
+      <tr><td>Contentful remains the source of product data</td><td><span class="lvl med">Medium</span></td><td>Clarify the system of record for products and colors; possible Contentful → JSON sync</td></tr>
+      <tr><td>Unknown Adobe I/O "hummingbird" service</td><td><span class="lvl low">Low</span></td><td>Confirm owner and purpose with the client</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<footer class="foot">
+  Generated from an automated scan of the site sitemap (299 URLs, 293 analyzed), visual block detection and live network capture on 20 Oct 2026. Estimates are indicative and should be refined in discovery.
+</footer>
+
+</div>
+<div class="tooltip" id="tt" role="tooltip"></div>
+</div>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const cur = root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    root.dataset.theme = cur === 'dark' ? 'light' : 'dark';
+  });
+
+  const tt = document.getElementById('tt');
+  const showTip = (e, html) => {
+    tt.innerHTML = html; tt.style.opacity = '1';
+    const x = Math.min(e.clientX + 14, innerWidth - tt.offsetWidth - 8);
+    const y = Math.min(e.clientY + 14, innerHeight - tt.offsetHeight - 8);
+    tt.style.left = `${x}px`; tt.style.top = `${y}px`;
+  };
+  const hideTip = () => { tt.style.opacity = '0'; };
+  const bindTip = (el, html) => {
+    el.addEventListener('mousemove', (e) => showTip(e, html));
+    el.addEventListener('mouseleave', hideTip);
+  };
+
+  // pages per template
+  const templates = [
+    ['blog-article', 114], ['product-detail', 113], ['content-landing', 32], ['lead-gen-form', 15],
+    ['campaign-landing', 12], ['contact-form', 4], ['product-launch', 1], ['campaign-microsite', 1], ['system-status', 1],
+  ];
+  const max = 115;
+  const bars = document.getElementById('templateBars');
+  templates.forEach(([name, n]) => {
+    const pct = ((n / 293) * 100).toFixed(1);
+    bars.insertAdjacentHTML('beforeend', `<div class="name">${name}</div><div class="track"><div class="bar" style="width:${(n / max) * 100}%"></div></div><div class="val">${n}</div>`);
+    bindTip(bars.lastElementChild.previousElementSibling.firstElementChild, `<strong>${name}</strong><span class="tt-sub">${n} pages · ${pct}% of analyzed pages</span>`);
+  });
+
+  // gantt
+  const W = 16;
+  const streams = [
+    ['Discovery & setup', 1, 2, 'Project & DA setup, API hosting decision, analytics plan, design inventory'],
+    ['Design system & global', 2, 4, 'Design tokens, fonts, header mega-nav, footer, announcement banner'],
+    ['Standard block library', 3, 7, '16 blocks / ~40 variants (hero, cards, columns, carousel, tabs, video…)'],
+    ['Custom blocks & APIs', 5, 11, 'API re-hosting, PDP blocks, dealer & contractor locators, quote, search, tech docs, Marketo'],
+    ['Import & content migration', 6, 12, '9 import scripts, bulk import 293 pages, 6 manual app pages, media ingest'],
+    ['Martech, SEO & performance', 10, 13, 'GTM + consent, redirects, metadata, sitemap, Lighthouse tuning'],
+    ['QA & UAT', 11, 15, 'Visual & functional QA, accessibility, author training, UAT fixes'],
+    ['Launch & hypercare', 15, 16, 'Go-live cut-over, monitoring, hypercare'],
+  ];
+  const milestones = [
+    [2, 'Kickoff complete — API strategy agreed, project live on aem.page'],
+    [4, 'Global design & header/footer sign-off'],
+    [7, 'Standard block library complete'],
+    [11, 'Integrations & product pages complete'],
+    [12, 'Content migration complete — content freeze'],
+    [15, 'UAT sign-off'],
+    [16, 'Go-live'],
+  ];
+  const g = document.getElementById('gantt');
+  const hdr = Array.from({ length: W }, (_, i) => `<span>W${i + 1}</span>`).join('');
+  g.insertAdjacentHTML('beforeend', `<div></div><div class="hdr">${hdr}</div>`);
+  streams.forEach(([name, s, e, desc], i) => {
+    const color = `var(--series-${i + 1})`;
+    g.insertAdjacentHTML('beforeend', `<div class="rowlabel"><i class="swatch" style="background:${color}"></i>${name}</div><div class="lane"><div class="seg" style="left:${((s - 1) / W) * 100}%;width:calc(${((e - s + 1) / W) * 100}% - 2px);background:${color}"></div></div>`);
+    bindTip(g.lastElementChild.firstElementChild, `<strong>${name}</strong><span class="tt-sub">Week ${s}–${e} (${e - s + 1} wks)</span><br>${desc}`);
+    document.getElementById('ganttTable').insertAdjacentHTML('beforeend', `<tr><td><i class="swatch" style="background:${color};width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:8px"></i>${name}</td><td class="num">W${s}–W${e}</td><td>${desc}</td></tr>`);
+  });
+  g.insertAdjacentHTML('beforeend', '<div class="rowlabel">Milestones</div><div class="lane mslane" id="msLane"></div>');
+  const msLane = document.getElementById('msLane');
+  milestones.forEach(([w, label], i) => {
+    msLane.insertAdjacentHTML('beforeend', `<div class="ms" style="left:min(${(w / W) * 100}%, calc(100% - 8px))"></div>`);
+    bindTip(msLane.lastElementChild, `<strong>M${i + 1} · end of week ${w}</strong>${label}`);
+    document.getElementById('msTable').insertAdjacentHTML('beforeend', `<tr><td class="num">W${w}</td><td><strong>M${i + 1}</strong> — ${label}</td></tr>`);
+  });
+})();
+</script>
+</body>
+</html>
