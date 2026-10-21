@@ -1,0 +1,92 @@
+/*
+ * James Hardie brand tokens.
+ * Extracted from computed styles on www.jameshardie.com (homepage + blog article).
+ */
+
+:root {
+  /* brand palette */
+  --color-primary: #00833e;
+  --color-primary-hover: #007035;
+  --color-primary-dark: #163c20;
+  --color-primary-tint: rgb(0 131 62 / 10%);
+  --color-secondary: #d4ccc4;
+  --color-secondary-dark: #82705e;
+  --color-secondary-light: #f6f5f3;
+  --color-neutral-950: #222;
+  --color-neutral-900: #1f2937;
+  --color-neutral-800: #333;
+  --color-neutral-600: #555;
+  --color-neutral-400: #9b9ba5;
+  --color-neutral-300: #ddd;
+  --color-neutral-200: #eee;
+  --color-neutral-100: #f3f3f3;
+  --color-white: #fff;
+
+  /* semantic colors */
+  --background-color: var(--color-white);
+  --light-color: var(--color-secondary-light);
+  --dark-color: var(--color-neutral-950);
+  --text-color: var(--color-neutral-900);
+  --heading-color: var(--color-neutral-800);
+  --paragraph-color: var(--color-neutral-600);
+  --link-color: var(--color-neutral-800);
+  --link-hover-color: var(--color-primary);
+  --link-underline-color: var(--color-primary);
+  --focus-ring-color: var(--color-primary);
+
+  /* fonts */
+  --body-font-family: helvetica-neue-pro, helvetica-neue-pro-fallback, arial, sans-serif;
+  --heading-font-family: helvetica-neue-pro, helvetica-neue-pro-fallback, arial, sans-serif;
+
+  /* body sizes (mobile) */
+  --body-font-size-l: 20px;
+  --body-font-size-m: 16px;
+  --body-font-size-s: 14px;
+  --body-font-size-xs: 12px;
+  --body-line-height: 26px;
+
+  /* heading sizes (mobile) */
+  --heading-font-size-xxl: 40px;
+  --heading-font-size-xl: 32px;
+  --heading-font-size-l: 28px;
+  --heading-font-size-m: 20px;
+  --heading-font-size-s: 20px;
+  --heading-font-size-xs: 16px;
+  --heading-line-height-xxl: 50px;
+  --heading-line-height-xl: 42px;
+  --heading-line-height-l: 40px;
+  --heading-line-height-m: 24px;
+  --heading-line-height-s: 24px;
+  --heading-line-height-xs: 22px;
+
+  /* display size used by hero headings */
+  --display-font-size: 48px;
+  --display-line-height: 56px;
+
+  /* layout */
+  --content-max-width: 1440px;
+  --article-max-width: 628px;
+  --section-padding-block: 40px;
+  --section-padding-inline: 16px;
+  --nav-height: 80px;
+
+  /* shape */
+  --radius-pill: 9999px;
+  --button-height: 44px;
+}
+
+@media (width >= 1024px) {
+  :root {
+    --body-line-height: 22px;
+    --heading-font-size-xxl: 48px;
+    --heading-font-size-xl: 36px;
+    --heading-font-size-l: 32px;
+    --heading-line-height-xxl: 58px;
+    --heading-line-height-xl: 46px;
+    --heading-line-height-l: 40px;
+    --display-font-size: 72px;
+    --display-line-height: 86px;
+    --section-padding-block: 48px;
+    --section-padding-inline: 80px;
+  }
+}
