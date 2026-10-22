@@ -36,9 +36,14 @@ function bindCarousel(block, track) {
     block.classList.toggle('no-overflow', !overflow);
     prev.disabled = !overflow || track.scrollLeft <= 1;
     next.disabled = !overflow || track.scrollLeft >= max - 1;
-    const { scrollLeft, clientWidth, scrollWidth } = track;
-    const ratio = scrollWidth ? (scrollLeft + clientWidth) / scrollWidth : 1;
-    bar.style.setProperty('--carousel-progress', `${Math.min(1, ratio) * 100}%`);
+    // like the source (Splide): bar = (current position + 1) / number of positions
+    const list = slides();
+    const positions = list.filter((s) => offsetOf(s) < max - 1).length + 1;
+    const index = track.scrollLeft >= max - 1
+      ? positions - 1
+      : Math.min(currentIndex(), positions - 1);
+    const ratio = overflow ? (index + 1) / positions : 1;
+    bar.style.setProperty('--carousel-progress', `${ratio * 100}%`);
   };
   const schedule = () => {
     if (ticking) return;
@@ -54,16 +59,32 @@ function bindCarousel(block, track) {
   update();
 }
 
+// source icons (stroke follows currentColor)
+const ARROW_ICON = '<svg width="18" height="16" viewBox="0 0 18 16" fill="none" aria-hidden="true" focusable="false"><path d="M16.5 8L1.5 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 1L1.5 8L8.5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const CARD_ICON = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M4 20.25L19.91 4.34" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.91003 4.33997H19.91V19.34" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
 function buildControls() {
   const controls = document.createElement('div');
   controls.className = `${BLOCK}-controls`;
   controls.innerHTML = `
-    <div class="${BLOCK}-progress" aria-hidden="true"><span></span></div>
     <div class="${BLOCK}-nav">
-      <button type="button" class="${BLOCK}-prev" aria-label="Previous slide"></button>
-      <button type="button" class="${BLOCK}-next" aria-label="Next slide"></button>
-    </div>`;
+      <button type="button" class="${BLOCK}-prev" aria-label="Previous slide">${ARROW_ICON}</button>
+      <button type="button" class="${BLOCK}-next" aria-label="Next slide">${ARROW_ICON}</button>
+    </div>
+    <div class="${BLOCK}-progress" aria-hidden="true"><span></span></div>`;
   return controls;
+}
+
+/**
+ * Only same-origin (media bus) images can be resized via query params;
+ * external sources such as images.ctfassets.net reject them.
+ */
+function isOptimizable(src) {
+  try {
+    return new URL(src, window.location.href).origin === window.location.origin;
+  } catch (e) {
+    return false;
+  }
 }
 
 /**
@@ -80,11 +101,12 @@ function buildCard(row) {
   if (picture) {
     const wrapper = picture.parentElement;
     const img = picture.querySelector('img');
-    const optimized = img
+    const optimized = img && isOptimizable(img.src)
       ? createOptimizedPicture(img.src, img.alt, false, [{ media: '(min-width: 1024px)', width: '750' }, { width: '600' }])
       : picture;
+    // appending moves the authored picture; only a replacement needs the original removed
+    if (optimized !== picture) picture.remove();
     media.append(optimized);
-    picture.remove();
     if (wrapper && wrapper.tagName === 'P' && !wrapper.children.length && !wrapper.textContent.trim()) {
       wrapper.remove();
     }
@@ -102,10 +124,15 @@ function buildCard(row) {
   if (heading) heading.classList.add(`${BLOCK}-title`);
   if (titleLink) {
     titleLink.classList.add(`${BLOCK}-title-link`);
+    // wrap the title text so it can be line-clamped next to the icon
+    const text = document.createElement('span');
+    text.className = `${BLOCK}-title-text`;
+    text.append(...titleLink.childNodes);
     const arrow = document.createElement('span');
     arrow.className = `${BLOCK}-arrow`;
     arrow.setAttribute('aria-hidden', 'true');
-    titleLink.append(arrow);
+    arrow.innerHTML = CARD_ICON;
+    titleLink.append(text, arrow);
     if (media.firstElementChild) {
       // make the image clickable without adding a second tab stop
       const imgLink = document.createElement('a');
