@@ -1,0 +1,51 @@
+.embed-designer {
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: var(--dark-color);
+}
+
+.embed-designer .embed-designer-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  min-height: 560px;
+  background-color: var(--dark-color);
+}
+
+.embed-designer .embed-designer-stage iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.embed-designer.is-empty .embed-designer-stage {
+  display: none;
+}
+
+.embed-designer .embed-designer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  min-height: 56px;
+  padding: 0 16px;
+  background-color: var(--color-neutral-100);
+}
+
+.embed-designer .embed-designer-attribution:any-link {
+  color: var(--color-neutral-800);
+  font-size: var(--body-font-size-s);
+  text-decoration: none;
+}
+
+.embed-designer .embed-designer-attribution:hover {
+  color: var(--link-hover-color);
+}
+
+/* breakpoint-exception: source site switches to its desktop layout at 1024px (Tailwind lg) */
+@media (width >= 1024px) {
+  .embed-designer .embed-designer-stage {
+    min-height: 0;
+  }
+}

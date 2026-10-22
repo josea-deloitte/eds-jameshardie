@@ -1,0 +1,18 @@
+{
+  "variantName": "embed-social",
+  "baseBlock": "embed",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "Sprinklr social (Instagram) gallery; the Sprinklr script is loaded lazily only when the block is scrolled near the viewport",
+    "description": "Light warm grey background rgb(246,245,243), 48px/80px padding. Header row: H3 left, text link with arrow right (Instagram). Below: Sprinklr packery-tile social gallery (63 posts, 2 rows of images) with a green \"Load more\" pill."
+  },
+  "contentPattern": {
+    "structure": "One cell: link to the Sprinklr embed script (https://gallery.sprinklr.com/clients/CLIENT_ID/embeds/EMBED_ID/script.js). A bare embed id is also accepted and uses client 24392. Gallery posts are rendered by Sprinklr at runtime",
+    "description": "Sprinklr social gallery embed (https://gallery.sprinklr.com/clients/24392/embeds/ZW1iZWQ6NjYwYTg5MTU2NGZiMGI1NTEzMzI4OGEw/script.js) | Script-driven Sprinklr packery tile gallery of Instagram posts with Load more button, not a URL/iframe embed"
+  },
+  "options": [],
+  "memberVariantIds": [],
+  "sourceUrl": "https://www.jameshardie.com/",
+  "usage": "Use for the social gallery band; put the heading and Instagram link in default content above it.",
+  "reuseGuidance": "For other third-party scripts create a dedicated embed variant."
+}

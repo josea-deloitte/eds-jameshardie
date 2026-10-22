@@ -1,0 +1,18 @@
+{
+  "variantName": "tabs-video",
+  "baseBlock": "tabs",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "centered underline tab bar; each panel shows text (H2, paragraph, optional CTA) beside an autoplaying looping muted video in a dark rounded box with a pause/play toggle",
+    "description": "Centered horizontal tab bar (4 labels rendered as h4 inside buttons, active tab underlined in green). Each panel is a side-by-side layout: H2 + text + optional text link on the left, autoplay looping video in a dark rounded box with pause button on the right."
+  },
+  "contentPattern": {
+    "structure": "One row per tab. Cell 1: tab label. Cell 2: H2, paragraph(s), optional CTA link, and a link to the panel MP4 video (the video link is removed from the text and played in the media box). Only the active tab video plays, and only while the block is on screen",
+    "description": "4 tabs: Get design ideas / Discover materials / Save and share / Make it real; each panel = H2, paragraph, optional CTA, MP4 video | Centered underline tab bar; each panel is text + CTA on the left and an autoplay looping video in a dark rounded box on the right"
+  },
+  "options": [],
+  "memberVariantIds": [],
+  "sourceUrl": "https://www.jameshardie.com/",
+  "usage": "Use for feature walkthroughs with a looping product video per step.",
+  "reuseGuidance": "For text-only tabs use a base tabs block."
+}

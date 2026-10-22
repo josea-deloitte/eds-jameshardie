@@ -1,0 +1,206 @@
+.carousel-article {
+  --carousel-gap: 16px;
+  --carousel-per-view: 1.15;
+
+  position: relative;
+}
+
+.carousel-article .carousel-article-viewport {
+  position: relative;
+}
+
+.carousel-article .carousel-article-track {
+  display: flex;
+  gap: var(--carousel-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.carousel-article .carousel-article-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-article .carousel-article-slide {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 calc((100% - (var(--carousel-gap) * (var(--carousel-per-view) - 1))) / var(--carousel-per-view));
+  box-sizing: border-box;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: var(--color-white);
+  scroll-snap-align: start;
+}
+
+.carousel-article .carousel-article-image {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.carousel-article .carousel-article-image a,
+.carousel-article .carousel-article-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-article .carousel-article-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-article .carousel-article-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.carousel-article .carousel-article-body > * {
+  margin: 0;
+}
+
+.carousel-article .carousel-article-title-link:any-link {
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.carousel-article .carousel-article-title-link:hover {
+  color: var(--link-hover-color);
+}
+
+.carousel-article .carousel-article-arrow {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  margin-top: 0.4em;
+  margin-right: 4px;
+  border-top: 2px solid var(--color-primary);
+  border-right: 2px solid var(--color-primary);
+  transform: rotate(45deg);
+}
+
+.carousel-article .carousel-article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.carousel-article .carousel-article-tag:any-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 12px;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  color: var(--color-neutral-800);
+  font-size: var(--body-font-size-s);
+  line-height: 24px;
+  text-decoration: none;
+}
+
+.carousel-article .carousel-article-tag:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* controls: progress bar + round arrows */
+.carousel-article .carousel-article-controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.carousel-article.no-overflow .carousel-article-controls {
+  display: none;
+}
+
+.carousel-article .carousel-article-progress {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-neutral-300);
+}
+
+.carousel-article .carousel-article-progress span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--carousel-progress, 0%);
+  background-color: var(--color-primary);
+  transition: width 0.2s ease-out;
+}
+
+.carousel-article .carousel-article-nav {
+  display: flex;
+  gap: 12px;
+}
+
+.carousel-article .carousel-article-nav button {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.carousel-article .carousel-article-nav button:hover,
+.carousel-article .carousel-article-nav button:focus-visible {
+  border-color: var(--color-primary-hover);
+  background-color: var(--color-primary-hover);
+}
+
+.carousel-article .carousel-article-nav button:disabled {
+  border-color: var(--color-neutral-400);
+  background-color: transparent;
+  color: var(--color-neutral-400);
+  cursor: default;
+}
+
+.carousel-article .carousel-article-nav button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid currentcolor;
+  border-right: 2px solid currentcolor;
+  transform: translate(-30%, -50%) rotate(-135deg);
+}
+
+.carousel-article .carousel-article-nav .carousel-article-next::after {
+  transform: translate(-70%, -50%) rotate(45deg);
+}
+
+@media (width >= 600px) {
+  .carousel-article {
+    --carousel-gap: 24px;
+    --carousel-per-view: 2.15;
+  }
+}
+
+/* breakpoint-exception: source site switches to its desktop carousel at 1024px (Tailwind lg) */
+@media (width >= 1024px) {
+  .carousel-article {
+    --carousel-per-view: 3.25;
+  }
+}

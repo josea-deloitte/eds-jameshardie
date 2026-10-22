@@ -1,0 +1,18 @@
+{
+  "variantName": "carousel-video",
+  "baseBlock": "carousel",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "horizontal carousel of portrait (9:16) video cards with poster, play icon and title overlay; clicking a card opens the video in a fullscreen modal player; prev/next arrows and a progress bar",
+    "description": "White background. Header row: H3 left, outlined pill CTA right. Carousel of 5 portrait (9:16) video cards, poster image + play icon + white title overlay at bottom; click opens a fullscreen video player."
+  },
+  "contentPattern": {
+    "structure": "One row per slide. Cell 1: poster image. Cell 2: title (H5) and a link to the MP4 video. Non-video links fall back to normal navigation",
+    "description": "Carousel of 5 video cards (poster, title, MP4): Will not burn**, Engineered for Climate(R), Creating possibilities, Leading transformation, Holds little appeal for pests | Portrait 9:16 poster cards with play icon and title overlay; each slide links an MP4 that opens fullscreen"
+  },
+  "options": [],
+  "memberVariantIds": [],
+  "sourceUrl": "https://www.jameshardie.com/",
+  "usage": "Use for testimonial or brand video rails.",
+  "reuseGuidance": "For article cards use carousel-article."
+}

@@ -1,0 +1,29 @@
+.embed-social {
+  position: relative;
+}
+
+.embed-social .embed-social-stage {
+  min-height: 200px;
+}
+
+/* reserve space while the third-party gallery is not loaded yet */
+.embed-social .embed-social-stage.is-loading {
+  min-height: 480px;
+  border-radius: 4px;
+  background-color: var(--color-neutral-200);
+}
+
+.embed-social [id^="sprinklr-embed-"] {
+  width: 100%;
+}
+
+.embed-social.is-empty {
+  display: none;
+}
+
+/* breakpoint-exception: source site switches to its desktop layout at 1024px (Tailwind lg) */
+@media (width >= 1024px) {
+  .embed-social .embed-social-stage.is-loading {
+    min-height: 640px;
+  }
+}

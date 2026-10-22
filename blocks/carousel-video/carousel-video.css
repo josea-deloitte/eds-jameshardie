@@ -1,0 +1,283 @@
+.carousel-video {
+  --carousel-gap: 16px;
+  --carousel-per-view: 1.6;
+
+  position: relative;
+}
+
+.carousel-video .carousel-video-viewport {
+  position: relative;
+}
+
+.carousel-video .carousel-video-track {
+  display: flex;
+  gap: var(--carousel-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.carousel-video .carousel-video-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-video .carousel-video-slide {
+  flex: 0 0 calc((100% - (var(--carousel-gap) * (var(--carousel-per-view) - 1))) / var(--carousel-per-view));
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.carousel-video .carousel-video-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 4px;
+  background-color: var(--dark-color);
+  color: var(--color-white);
+  font: inherit;
+  text-align: left;
+}
+
+.carousel-video button.carousel-video-card {
+  cursor: pointer;
+}
+
+.carousel-video .carousel-video-card:focus-visible {
+  outline: 2px solid var(--focus-ring-color);
+  outline-offset: 2px;
+}
+
+.carousel-video .carousel-video-poster,
+.carousel-video .carousel-video-poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-video .carousel-video-poster img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.carousel-video .carousel-video-card:hover .carousel-video-poster img {
+  transform: scale(1.03);
+}
+
+/* gradient so the title stays legible */
+.carousel-video .carousel-video-card::after {
+  content: '';
+  position: absolute;
+  inset: 40% 0 0;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0%), rgb(0 0 0 / 60%));
+  pointer-events: none;
+}
+
+.carousel-video .carousel-video-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  border: 2px solid var(--color-white);
+  border-radius: 50%;
+  background-color: rgb(51 51 51 / 30%);
+  transform: translate(-50%, -50%);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.carousel-video .carousel-video-play::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 14px solid var(--color-white);
+  transform: translate(-35%, -50%);
+}
+
+.carousel-video .carousel-video-card:hover .carousel-video-play,
+.carousel-video .carousel-video-card:focus-visible .carousel-video-play {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+}
+
+.carousel-video .carousel-video-title {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 1;
+  color: var(--color-white);
+  font-size: var(--heading-font-size-m);
+  font-weight: 700;
+  line-height: var(--heading-line-height-m);
+}
+
+/* controls: progress bar + round arrows */
+.carousel-video .carousel-video-controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.carousel-video.no-overflow .carousel-video-controls {
+  display: none;
+}
+
+.carousel-video .carousel-video-progress {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-neutral-300);
+}
+
+.carousel-video .carousel-video-progress span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--carousel-progress, 0%);
+  background-color: var(--color-primary);
+  transition: width 0.2s ease-out;
+}
+
+.carousel-video .carousel-video-nav {
+  display: flex;
+  gap: 12px;
+}
+
+.carousel-video .carousel-video-nav button {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.carousel-video .carousel-video-nav button:hover,
+.carousel-video .carousel-video-nav button:focus-visible {
+  border-color: var(--color-primary-hover);
+  background-color: var(--color-primary-hover);
+}
+
+.carousel-video .carousel-video-nav button:disabled {
+  border-color: var(--color-neutral-400);
+  background-color: transparent;
+  color: var(--color-neutral-400);
+  cursor: default;
+}
+
+.carousel-video .carousel-video-nav button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid currentcolor;
+  border-right: 2px solid currentcolor;
+  transform: translate(-30%, -50%) rotate(-135deg);
+}
+
+.carousel-video .carousel-video-nav .carousel-video-next::after {
+  transform: translate(-70%, -50%) rotate(45deg);
+}
+
+/* fullscreen player (rendered in the top layer via showModal) */
+.carousel-video .carousel-video-player {
+  box-sizing: border-box;
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 56px 16px 16px;
+  border: 0;
+  background-color: rgb(0 0 0 / 92%);
+}
+
+.carousel-video .carousel-video-player::backdrop {
+  background-color: rgb(0 0 0 / 80%);
+}
+
+.carousel-video .carousel-video-player[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-video .carousel-video-player video {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  background-color: #000;
+}
+
+.carousel-video .carousel-video-player-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--color-white);
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.carousel-video .carousel-video-player-close::before,
+.carousel-video .carousel-video-player-close::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 2px;
+  background-color: var(--color-white);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.carousel-video .carousel-video-player-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.carousel-video .carousel-video-player-close:hover,
+.carousel-video .carousel-video-player-close:focus-visible {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+}
+
+body.carousel-video-player-open {
+  overflow: hidden;
+}
+
+@media (width >= 600px) {
+  .carousel-video {
+    --carousel-gap: 24px;
+    --carousel-per-view: 2.6;
+  }
+}
+
+/* breakpoint-exception: source site switches to its desktop carousel at 1024px (Tailwind lg) */
+@media (width >= 1024px) {
+  .carousel-video {
+    --carousel-per-view: 4.2;
+  }
+}
