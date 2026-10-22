@@ -1,6 +1,7 @@
 .carousel-hotspot {
+  /* the source uses fixed slide boxes; hotspot % coordinates are relative to them */
   --carousel-gap: 16px;
-  --carousel-per-view: 1.15;
+  --hotspot-slide-width: 315px;
   --hotspot-slide-height: 464px;
 
   position: relative;
@@ -27,7 +28,7 @@
 }
 
 .carousel-hotspot .carousel-hotspot-slide {
-  flex: 0 0 calc((100% - (var(--carousel-gap) * (var(--carousel-per-view) - 1))) / var(--carousel-per-view));
+  flex: 0 0 min(var(--hotspot-slide-width), 100%);
   min-width: 0;
   scroll-snap-align: start;
 }
@@ -108,9 +109,10 @@
 }
 
 .carousel-hotspot .carousel-hotspot-hotspot-card {
+  /* default: to the right of the button, 10px gap, top 46px above the button */
   position: absolute;
-  top: 28px;
-  left: -20px;
+  top: -66px;
+  left: 30px;
   box-sizing: border-box;
   width: 201px;
   padding: 8px 8px 16px;
@@ -125,13 +127,19 @@
 }
 
 .carousel-hotspot .carousel-hotspot-hotspot.is-left .carousel-hotspot-hotspot-card {
-  right: -20px;
+  right: 30px;
   left: auto;
 }
 
-.carousel-hotspot .carousel-hotspot-hotspot.is-up .carousel-hotspot-hotspot-card {
+/* not enough room on either side: drop the card below the button instead */
+.carousel-hotspot .carousel-hotspot-hotspot.is-below .carousel-hotspot-hotspot-card {
+  top: 30px;
+  left: -100px;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot.is-below.is-up .carousel-hotspot-hotspot-card {
   top: auto;
-  bottom: 28px;
+  bottom: 30px;
 }
 
 .carousel-hotspot .carousel-hotspot-hotspot-body {
@@ -280,14 +288,13 @@
 @media (width >= 600px) {
   .carousel-hotspot {
     --carousel-gap: 24px;
-    --carousel-per-view: 1.6;
   }
 }
 
 /* breakpoint-exception: source site switches to its desktop carousel at 1024px (Tailwind lg) */
 @media (width >= 1024px) {
   .carousel-hotspot {
-    --carousel-per-view: 2.3;
+    --hotspot-slide-width: 410px;
     --hotspot-slide-height: 516px;
   }
 }

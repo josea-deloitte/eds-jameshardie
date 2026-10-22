@@ -2,11 +2,7 @@
   position: relative;
 }
 
-.embed-social .embed-social-stage {
-  min-height: 200px;
-}
-
-/* reserve space while the third-party gallery is not loaded yet */
+/* reserve space while the third-party gallery has not rendered yet */
 .embed-social .embed-social-stage.is-loading {
   min-height: 480px;
   border-radius: 4px;
@@ -17,7 +13,9 @@
   width: 100%;
 }
 
-.embed-social.is-empty {
+/* gallery blocked or failed: collapse; the section's "Follow" link remains */
+.embed-social.is-empty,
+.embed-social.is-unavailable {
   display: none;
 }
 

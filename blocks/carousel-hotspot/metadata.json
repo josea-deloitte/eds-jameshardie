@@ -3,11 +3,11 @@
   "baseBlock": "carousel",
   "canonicalModel": "standalone",
   "visualCharacteristics": {
-    "purpose": "horizontal carousel of tall product photos with (+) hotspot buttons that open product info cards (name, color, View product link); prev/next arrows and a progress bar",
+    "purpose": "horizontal carousel of fixed-size product photos with (+) hotspot buttons that open product info cards (name, color, View product link) beside the button, kept inside the slide; the first hotspot starts open; prev/next arrows and a progress bar",
     "description": "White background. Intro row: H3 left, paragraph + green pill CTA right (two-column intro header). Below: full-bleed Splide carousel of 5 tall product photos with (+) hotspot buttons that open white info popovers; prev/next arrows and green progress bar."
   },
   "contentPattern": {
-    "structure": "One row per slide. Cell 1: product photo. Cell 2: one group per hotspot, each starting with a heading (H5 product name), followed by an optional position paragraph with x/y percentages measured from the image top-left (e.g. \"40% 60%\", \"40, 60\" or \"x: 40, y: 60\"), a color paragraph and a \"View product\" link. Hotspots without a position get default positions",
+    "structure": "One row per slide. Cell 1: product photo. Cell 2: one group per hotspot, each starting with a heading (H5 product name), followed by an optional position paragraph giving the hotspot centre as x/y percentages of the slide, measured from its top-left (e.g. \"40% 60%\", \"40, 60\" or \"x: 40, y: 60\"), a color paragraph and a \"View product\" link. Hotspots without a position get default positions. Slides are fixed-size like the source (315x464 mobile, 410x516 desktop), so positions stay on the same spot of the photo",
     "description": "Image carousel of 5 product photos; 7 hotspots in total (slides 3 and 4 have 2 each), each popover = product name (h5), color, \"View product\" link | Image-only slides with (+) hotspot buttons that open product popovers (name, color, View product); 1-2 hotspots per slide"
   },
   "options": [],

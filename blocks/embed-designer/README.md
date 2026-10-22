@@ -1,6 +1,6 @@
 # embed-designer
 
-Custom **embed** block. Purpose: lazy-loaded 16:9 iframe of the Hover home exterior designer with a light footer bar for attribution links.
+Custom **embed** block. Purpose: lazy-loaded iframe of the Hover home exterior designer (600px tall on mobile, 800px from 1024px) with a centered light footer bar for attribution links; a plain link to the designer shows until the iframe loads.
 
 ## Authoring (Document Authoring)
 

@@ -10,6 +10,11 @@ const DEFAULT_POSITIONS = [[50, 50], [30, 35], [70, 65], [25, 70], [75, 30]];
 
 const clamp = (n) => Math.max(4, Math.min(96, n));
 
+// card geometry from the source: 10px right of the 40px button, 46px above its top edge
+const SIDE_OFFSET = 30;
+const CARD_RAISE = -66;
+const EDGE = 8;
+
 let hotspotId = 0;
 
 /**
@@ -106,6 +111,35 @@ function splitGroups(nodes) {
   return groups.filter((g) => g.some((n) => n.textContent.trim() || (n.querySelector && n.querySelector('a, img'))));
 }
 
+/**
+ * Positions an open card inside its slide: beside the button (right, else left),
+ * vertically clamped to the slide; below/above the button when neither side fits.
+ */
+function placeCard(spot, card) {
+  const stage = spot.closest(`.${BLOCK}-stage`);
+  if (!stage) return;
+  spot.classList.remove('is-left', 'is-below', 'is-up');
+  card.style.removeProperty('top');
+  card.style.removeProperty('left');
+  const s = stage.getBoundingClientRect();
+  const p = spot.getBoundingClientRect();
+  const cx = p.left - s.left;
+  const cy = p.top - s.top;
+  const { offsetWidth: cw, offsetHeight: ch } = card;
+  const gap = SIDE_OFFSET + cw + EDGE;
+  if (cx + gap > s.width && cx - gap >= 0) spot.classList.add('is-left');
+  else if (cx + gap > s.width) spot.classList.add('is-below');
+
+  if (spot.classList.contains('is-below')) {
+    if (cy + SIDE_OFFSET + ch + EDGE > s.height) spot.classList.add('is-up');
+    const left = Math.max(EDGE, Math.min(s.width - cw - EDGE, cx - cw / 2));
+    card.style.left = `${Math.round(left - cx)}px`;
+    return;
+  }
+  const top = Math.max(EDGE, Math.min(s.height - ch - EDGE, cy + CARD_RAISE));
+  card.style.top = `${Math.round(top - cy)}px`;
+}
+
 function buildHotspot(block, group, index) {
   hotspotId += 1;
   const id = `${BLOCK}-card-${hotspotId}`;
@@ -124,8 +158,6 @@ function buildHotspot(block, group, index) {
   spot.className = `${BLOCK}-hotspot`;
   spot.style.setProperty('--hotspot-x', `${x}%`);
   spot.style.setProperty('--hotspot-y', `${y}%`);
-  if (x > 55) spot.classList.add('is-left');
-  if (y > 55) spot.classList.add('is-up');
 
   const heading = content.find((n) => /^H[1-6]$/.test(n.tagName || ''));
   const label = heading ? heading.textContent.trim() : 'product';
@@ -168,6 +200,7 @@ function buildHotspot(block, group, index) {
     spot.classList.toggle('is-open', open);
     button.setAttribute('aria-expanded', String(open));
     card.hidden = !open;
+    if (open) placeCard(spot, card);
   };
   button.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -241,8 +274,15 @@ export default function decorate(block) {
   block.replaceChildren(viewport, buildControls());
 
   document.addEventListener('click', () => closeAll(block));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAll(block);
+  });
   track.addEventListener('scroll', () => closeAll(block), { passive: true });
 
   if (!track.children.length) return;
   bindCarousel(block, track);
+
+  // like the source, the first product hotspot starts open
+  const first = block.querySelector(`.${BLOCK}-hotspot-button`);
+  if (first) requestAnimationFrame(() => first.click());
 }

@@ -109,7 +109,8 @@ function buildCard(row) {
     if (media.firstElementChild) {
       // make the image clickable without adding a second tab stop
       const imgLink = document.createElement('a');
-      imgLink.href = titleLink.href;
+      // keep the authored (relative) href so both links resolve identically
+      imgLink.setAttribute('href', titleLink.getAttribute('href'));
       imgLink.tabIndex = -1;
       imgLink.setAttribute('aria-hidden', 'true');
       imgLink.append(...media.childNodes);

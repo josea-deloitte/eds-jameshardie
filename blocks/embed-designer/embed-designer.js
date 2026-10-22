@@ -20,7 +20,24 @@ function loadIframe(stage, src, title) {
   iframe.loading = 'lazy';
   iframe.setAttribute('allow', 'fullscreen; clipboard-write; camera');
   iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-  stage.replaceChildren(iframe);
+  // the placeholder stays underneath; the iframe covers it once it paints
+  stage.append(iframe);
+}
+
+/**
+ * Fallback inside the stage before the iframe is requested (or when it is never
+ * requested): a plain link to the designer so the block is never an empty box.
+ */
+function buildPlaceholder(src, title) {
+  const placeholder = document.createElement('p');
+  placeholder.className = 'embed-designer-placeholder';
+  const a = document.createElement('a');
+  a.href = src;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  a.textContent = title;
+  placeholder.append(a);
+  return placeholder;
 }
 
 export default function decorate(block) {
@@ -56,6 +73,7 @@ export default function decorate(block) {
 
   const src = embed.url.href;
   stage.classList.add('is-loading');
+  stage.append(buildPlaceholder(src, title));
   const load = () => {
     stage.classList.remove('is-loading');
     loadIframe(stage, src, title);

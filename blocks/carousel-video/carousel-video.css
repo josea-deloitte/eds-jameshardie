@@ -1,6 +1,7 @@
 .carousel-video {
+  /* source: fixed 310px x 551px (9:16) cards at every breakpoint */
   --carousel-gap: 16px;
-  --carousel-per-view: 1.6;
+  --carousel-slide-width: 310px;
 
   position: relative;
 }
@@ -26,7 +27,7 @@
 }
 
 .carousel-video .carousel-video-slide {
-  flex: 0 0 calc((100% - (var(--carousel-gap) * (var(--carousel-per-view) - 1))) / var(--carousel-per-view));
+  flex: 0 0 min(var(--carousel-slide-width), 100%);
   min-width: 0;
   scroll-snap-align: start;
 }
@@ -271,13 +272,5 @@ body.carousel-video-player-open {
 @media (width >= 600px) {
   .carousel-video {
     --carousel-gap: 24px;
-    --carousel-per-view: 2.6;
-  }
-}
-
-/* breakpoint-exception: source site switches to its desktop carousel at 1024px (Tailwind lg) */
-@media (width >= 1024px) {
-  .carousel-video {
-    --carousel-per-view: 4.2;
   }
 }

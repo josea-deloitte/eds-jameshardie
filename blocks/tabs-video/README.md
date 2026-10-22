@@ -1,6 +1,6 @@
 # tabs-video
 
-Custom **tabs** block. Purpose: centered underline tab bar; each panel shows text (H2, paragraph, optional CTA) beside an autoplaying looping muted video in a dark rounded box with a pause/play toggle.
+Custom **tabs** block. Purpose: centered underline tab bar; each panel shows text (H2, paragraph, optional CTA) beside a 16:9 autoplaying looping muted video in a dark rounded box with a pause/play toggle; on mobile the video stacks above the text and tab labels wrap.
 
 ## Authoring (Document Authoring)
 
