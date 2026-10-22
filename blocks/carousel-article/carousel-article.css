@@ -1,7 +1,12 @@
+/*
+ * carousel-article: values measured from computed styles of the
+ * "Find the latest information and inspiration" rail on www.jameshardie.com.
+ */
 .carousel-article {
   --carousel-gap: 16px;
   --carousel-per-view: 4;
   --carousel-slide-width: 303px;
+  --carousel-bleed: var(--section-padding-inline);
 
   position: relative;
 }
@@ -10,13 +15,15 @@
   position: relative;
 }
 
+/* the track bleeds into the section gutters so neighbouring cards peek, like the source */
 .carousel-article .carousel-article-track {
   display: flex;
   gap: var(--carousel-gap);
-  margin: 0;
-  padding: 0;
+  margin: 0 calc(-1 * var(--carousel-bleed));
+  padding: 0 var(--carousel-bleed) 16px;
   list-style: none;
   overflow-x: auto;
+  scroll-padding-inline: var(--carousel-bleed);
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scrollbar-width: none;
@@ -26,28 +33,38 @@
   display: none;
 }
 
+/* card */
 .carousel-article .carousel-article-slide {
   display: flex;
   flex-direction: column;
   flex: 0 0 min(var(--carousel-slide-width), 100%);
   box-sizing: border-box;
   min-width: 0;
+  margin: 0;
   overflow: hidden;
   border-radius: 4px;
   background-color: var(--color-white);
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 10%),
+    0 2px 4px -2px rgb(0 0 0 / 10%),
+    0 2px 4px -2px rgb(51 51 51 / 6%),
+    0 4px 8px -2px rgb(51 51 51 / 10%);
   scroll-snap-align: start;
 }
 
 .carousel-article .carousel-article-image {
+  flex: 0 0 auto;
   height: 240px;
   overflow: hidden;
+  border-radius: 4px 4px 0 0;
 }
 
-.carousel-article .carousel-article-image a,
+.carousel-article .carousel-article-image a:any-link,
 .carousel-article .carousel-article-image picture {
   display: block;
   width: 100%;
   height: 100%;
+  border: 0;
 }
 
 .carousel-article .carousel-article-image img {
@@ -57,60 +74,108 @@
   object-fit: cover;
 }
 
+/* zoom in over 300ms on card hover; snaps back instantly like the source */
+.carousel-article .carousel-article-slide:hover .carousel-article-image img {
+  transform: scale(1.05);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .carousel-article .carousel-article-body {
   display: flex;
   flex: 1;
   flex-direction: column;
+  justify-content: space-between;
   gap: 16px;
-  padding: 24px;
+  padding: 16px 0;
 }
 
 .carousel-article .carousel-article-body > * {
   margin: 0;
 }
 
-.carousel-article .carousel-article-title-link:any-link {
-  display: inline-flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-  color: inherit;
-  text-decoration: none;
+/* title row: clamped title + diagonal arrow icon */
+.carousel-article .carousel-article-title {
+  padding: 0 8px;
+  color: var(--color-neutral-800);
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xs);
+  font-weight: 700;
+  line-height: var(--heading-line-height-xs);
 }
 
-.carousel-article .carousel-article-title-link:hover {
-  color: var(--link-hover-color);
+.carousel-article .carousel-article-title-link:any-link {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border: 0;
+  color: inherit;
+  text-decoration: none;
+  transition: none;
+}
+
+.carousel-article .carousel-article-title-text {
+  display: -webkit-box;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.carousel-article .carousel-article-title sup {
+  position: relative;
+  top: -0.5em;
+  font-size: 75%;
+  line-height: inherit;
+  vertical-align: baseline;
 }
 
 .carousel-article .carousel-article-arrow {
-  flex: 0 0 auto;
-  width: 10px;
-  height: 10px;
-  margin-top: 0.4em;
-  margin-right: 4px;
-  border-top: 2px solid var(--color-primary);
-  border-right: 2px solid var(--color-primary);
-  transform: rotate(45deg);
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
 }
 
+.carousel-article .carousel-article-arrow svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.carousel-article .carousel-article-slide:hover .carousel-article-title-link:any-link {
+  color: var(--color-primary);
+}
+
+.carousel-article .carousel-article-slide:hover .carousel-article-title-text {
+  text-decoration: underline;
+}
+
+/* category pills */
 .carousel-article .carousel-article-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: auto;
+  padding: 0 16px;
+  overflow-y: hidden;
 }
 
 .carousel-article .carousel-article-tag:any-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  padding: 2px 12px;
-  border: 1px solid var(--color-primary);
+  box-sizing: border-box;
+  width: auto;
+  height: 24px;
+  padding: 3.2px 12px 0;
+  border: 2px solid var(--color-primary);
   border-radius: var(--radius-pill);
+  background-color: var(--color-neutral-100);
   color: var(--color-neutral-800);
-  font-size: var(--body-font-size-s);
-  line-height: 24px;
+  font-size: var(--body-font-size-xs);
+  line-height: 12.8px;
   text-decoration: none;
+  white-space: nowrap;
+  transition: none;
 }
 
 .carousel-article .carousel-article-tag:hover {
@@ -118,11 +183,11 @@
   color: var(--color-white);
 }
 
-/* controls: progress bar + round arrows */
+/* controls: arrows (desktop only) + progress bar */
 .carousel-article .carousel-article-controls {
   display: flex;
   align-items: center;
-  gap: 24px;
+  justify-content: space-between;
   margin-top: 24px;
 }
 
@@ -130,78 +195,186 @@
   display: none;
 }
 
-.carousel-article .carousel-article-progress {
-  position: relative;
-  flex: 1;
-  height: 2px;
-  background-color: var(--color-neutral-300);
-}
-
-.carousel-article .carousel-article-progress span {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: var(--carousel-progress, 0%);
-  background-color: var(--color-primary);
-  transition: width 0.2s ease-out;
-}
-
 .carousel-article .carousel-article-nav {
-  display: flex;
-  gap: 12px;
+  display: none;
+  gap: 16px;
 }
 
 .carousel-article .carousel-article-nav button {
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 40px;
   height: 40px;
   margin: 0;
   padding: 0;
-  border: 2px solid var(--color-primary);
+  border: 0;
   border-radius: 50%;
   background-color: var(--color-primary);
   color: var(--color-white);
   cursor: pointer;
 }
 
-.carousel-article .carousel-article-nav button:hover,
-.carousel-article .carousel-article-nav button:focus-visible {
-  border-color: var(--color-primary-hover);
-  background-color: var(--color-primary-hover);
-}
-
 .carousel-article .carousel-article-nav button:disabled {
-  border-color: var(--color-neutral-400);
-  background-color: transparent;
-  color: var(--color-neutral-400);
+  background-color: var(--color-neutral-300);
+  color: var(--color-neutral-600);
   cursor: default;
 }
 
-.carousel-article .carousel-article-nav button::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  border-top: 2px solid currentcolor;
-  border-right: 2px solid currentcolor;
-  transform: translate(-30%, -50%) rotate(-135deg);
+.carousel-article .carousel-article-nav button:hover:not(:disabled) {
+  opacity: 0.9;
 }
 
-.carousel-article .carousel-article-nav .carousel-article-next::after {
-  transform: translate(-70%, -50%) rotate(45deg);
+.carousel-article .carousel-article-nav svg {
+  display: block;
+  width: 1.2em;
+  height: 1.2em;
 }
 
-@media (width >= 600px) {
-  .carousel-article {
-    --carousel-gap: 24px;
+.carousel-article .carousel-article-next svg {
+  transform: rotate(180deg);
+}
+
+.carousel-article .carousel-article-progress {
+  display: flex;
+  flex: 1 1 100%;
+  align-items: center;
+  height: 1px;
+  border-radius: 4px;
+  background-color: var(--color-primary-dark);
+}
+
+.carousel-article .carousel-article-progress span {
+  display: block;
+  width: var(--carousel-progress, 0%);
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primary);
+}
+
+/* breakpoint-exception: source card body/title switch at 768px (Tailwind md) */
+@media (width >= 768px) {
+  .carousel-article .carousel-article-title {
+    padding: 0 16px;
+    font-size: var(--heading-font-size-m);
+    line-height: var(--heading-line-height-m);
   }
 }
 
 /* breakpoint-exception: source site switches to its desktop carousel at 1024px (Tailwind lg) */
 @media (width >= 1024px) {
+  .carousel-article {
+    --carousel-gap: 24px;
+  }
+
   /* four cards per view, like the source */
   .carousel-article .carousel-article-slide {
     flex-basis: calc((100% - (var(--carousel-gap) * (var(--carousel-per-view) - 1))) / var(--carousel-per-view));
+  }
+
+  .carousel-article .carousel-article-controls {
+    height: 40px;
+  }
+
+  /* source splits the row 3:4 between the arrows and the progress track */
+  .carousel-article .carousel-article-nav {
+    display: flex;
+    flex: 3 1 0;
+  }
+
+  .carousel-article .carousel-article-progress {
+    flex: 4 1 0;
+  }
+}
+
+/*
+ * Section heading row (h3 + "Read our blog") of the section holding this block.
+ * Mobile: link moves below the carousel; desktop: heading left, link right.
+ */
+main .section:has(> .carousel-article-wrapper) {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0 48px;
+}
+
+main .section:has(> .carousel-article-wrapper) > .carousel-article-wrapper {
+  order: 1;
+  width: 100%;
+}
+
+main .section:has(> .carousel-article-wrapper) > .default-content-wrapper {
+  display: contents;
+}
+
+main .section:has(> .carousel-article-wrapper) > .default-content-wrapper > * {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0 var(--section-padding-inline);
+}
+
+main .section:has(> .carousel-article-wrapper) > .default-content-wrapper > :is(h2, h3) {
+  padding-bottom: 32px;
+  color: var(--color-neutral-800);
+  font-size: var(--heading-font-size-xl);
+  font-weight: 700;
+  line-height: var(--heading-line-height-xl);
+}
+
+main .section:has(> .carousel-article-wrapper) > .default-content-wrapper > p:has(> a:only-child) {
+  order: 2;
+  padding-top: 32px;
+}
+
+main .section:has(> .carousel-article-wrapper) > .default-content-wrapper > p > a:any-link:only-child {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding-top: 3px;
+  border: 0;
+  color: var(--text-color);
+  font-size: var(--body-font-size-l);
+  line-height: 28px;
+}
+
+main .section:has(> .carousel-article-wrapper) > .default-content-wrapper > p > a:any-link:only-child::after {
+  content: '';
+  flex: 0 0 18px;
+  height: 16px;
+  margin-top: 3px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='16' viewBox='0 0 18 16' fill='none'%3E%3Cpath d='M1.5 8H16.5001' stroke='%2300833E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M9.5 15L16.5 8L9.5 1' stroke='%2300833E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+main .section:has(> .carousel-article-wrapper) > .default-content-wrapper > p > a:any-link:only-child:hover {
+  color: var(--color-primary);
+}
+
+/* breakpoint-exception: source heading row switches to a single line at 1024px (Tailwind lg) */
+@media (width >= 1024px) {
+  main .section:has(> .carousel-article-wrapper) {
+    display: block;
+    padding: 64px 0;
+  }
+
+  main .section:has(> .carousel-article-wrapper) > .default-content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 32px;
+  }
+
+  main .section:has(> .carousel-article-wrapper) > .default-content-wrapper > * {
+    width: auto;
+    padding: 0;
+  }
+
+  main .section:has(> .carousel-article-wrapper) > .default-content-wrapper > :is(h2, h3) {
+    padding-bottom: 0;
+  }
+
+  main .section:has(> .carousel-article-wrapper) > .default-content-wrapper > p:has(> a:only-child) {
+    flex: 0 0 auto;
+    padding-top: 0;
   }
 }
