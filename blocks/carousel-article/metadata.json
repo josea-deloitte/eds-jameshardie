@@ -1,0 +1,18 @@
+{
+  "variantName": "carousel-article",
+  "baseBlock": "carousel",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "horizontal carousel of white article cards (landscape image, linked title with arrow, category pill links); prev/next arrows and a progress bar",
+    "description": "Sand/beige background rgb(212,204,196), 64px vertical padding. Header row: H3 left, \"Read our blog\" arrow link right. Carousel of 6 white article cards: landscape image, H3 title + arrow icon, small outlined category pill link; prev/next arrows and green progress bar."
+  },
+  "contentPattern": {
+    "structure": "One row per slide. Cell 1: article image. Cell 2: H3 title linked to the article, then a paragraph with one or more category links (rendered as outlined pills)",
+    "description": "Carousel of 6 blog article cards (image, title linking to article, category tag link) | White article cards (landscape image, title with arrow, category pill link) on a sand band; differs from product/video carousels in card chrome and content"
+  },
+  "options": [],
+  "memberVariantIds": [],
+  "sourceUrl": "https://www.jameshardie.com/",
+  "usage": "Use for latest blog/article rails; set section style beige for the sand band.",
+  "reuseGuidance": "For video cards use carousel-video; for product hotspots use carousel-hotspot."
+}

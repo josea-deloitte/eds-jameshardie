@@ -1,0 +1,18 @@
+{
+  "variantName": "embed-designer",
+  "baseBlock": "embed",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "lazy-loaded 16:9 iframe of the Hover home exterior designer with a light footer bar for attribution links",
+    "description": "80px padded band, transparent background. Large dark 16:9 iframe (hover.to designer embed-container, colorMode=dark) with a light-grey 56px footer bar carrying a \"Hover\" logo link (https://hover.to/wr/properties). Visual-tree hint is default-content, but an iframe cannot be authored as default content, so it is mapped to an embed block."
+  },
+  "contentPattern": {
+    "structure": "One cell: link to the Hover designer embed-container URL (https://hover.to/designer/embed-container?...). Any additional links (e.g. the Hover attribution link) are rendered in the footer bar. An optional heading sets the iframe title",
+    "description": "Third-party Hover designer iframe embed (script https://hover.to/designer/embed?version=1.0&key=d229ec07-2822-4bec-93b0-3c815df3beae) with \"Hover\" attribution link | Large dark 16:9 interactive app iframe loaded via the Hover script, with a light footer bar carrying the Hover attribution link"
+  },
+  "options": [],
+  "memberVariantIds": [],
+  "sourceUrl": "https://www.jameshardie.com/",
+  "usage": "Use where the Hover designer app is embedded.",
+  "reuseGuidance": "For generic video or social embeds use the base embed block."
+}

@@ -1,0 +1,17 @@
+{
+  "status": "success",
+  "url": "https://www.jameshardie.com/",
+  "path": "index",
+  "timestamp": "2026-10-22T01:44:43.554Z",
+  "title": "House Siding & Backer Board | James Hardie",
+  "template": "campaign-landing",
+  "blocks": [
+    "hero-video",
+    "carousel-hotspot",
+    "carousel-video",
+    "embed-designer",
+    "tabs-video",
+    "embed-social",
+    "carousel-article"
+  ]
+}

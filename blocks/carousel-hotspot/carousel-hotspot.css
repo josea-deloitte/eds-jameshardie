@@ -1,0 +1,293 @@
+.carousel-hotspot {
+  --carousel-gap: 16px;
+  --carousel-per-view: 1.15;
+  --hotspot-slide-height: 464px;
+
+  position: relative;
+}
+
+.carousel-hotspot .carousel-hotspot-viewport {
+  position: relative;
+}
+
+.carousel-hotspot .carousel-hotspot-track {
+  display: flex;
+  gap: var(--carousel-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.carousel-hotspot .carousel-hotspot-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-hotspot .carousel-hotspot-slide {
+  flex: 0 0 calc((100% - (var(--carousel-gap) * (var(--carousel-per-view) - 1))) / var(--carousel-per-view));
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.carousel-hotspot .carousel-hotspot-stage {
+  position: relative;
+  height: var(--hotspot-slide-height);
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: var(--color-neutral-100);
+}
+
+.carousel-hotspot .carousel-hotspot-stage picture,
+.carousel-hotspot .carousel-hotspot-stage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot {
+  position: absolute;
+  top: var(--hotspot-y, 50%);
+  left: var(--hotspot-x, 50%);
+  z-index: 1;
+  width: 0;
+  height: 0;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot.is-open {
+  z-index: 2;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-button {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--color-white);
+  border-radius: 50%;
+  background-color: rgb(51 51 51 / 30%);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-button:hover,
+.carousel-hotspot .carousel-hotspot-hotspot-button:focus-visible,
+.carousel-hotspot .carousel-hotspot-hotspot.is-open .carousel-hotspot-hotspot-button {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+}
+
+/* "+" icon; the vertical bar fades out when open to read as "-" */
+.carousel-hotspot .carousel-hotspot-hotspot-button::before,
+.carousel-hotspot .carousel-hotspot-hotspot-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: currentcolor;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-button::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot.is-open .carousel-hotspot-hotspot-button::after {
+  opacity: 0;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-card {
+  position: absolute;
+  top: 28px;
+  left: -20px;
+  box-sizing: border-box;
+  width: 201px;
+  padding: 8px 8px 16px;
+  border-radius: 4px;
+  background-color: var(--color-white);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
+  color: var(--text-color);
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-card[hidden] {
+  display: none;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot.is-left .carousel-hotspot-hotspot-card {
+  right: -20px;
+  left: auto;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot.is-up .carousel-hotspot-hotspot-card {
+  top: auto;
+  bottom: 28px;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 24px;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-body > * {
+  margin: 0;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-title {
+  padding-top: 8px;
+  font-size: var(--heading-font-size-m);
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-link:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-link:hover {
+  color: var(--link-hover-color);
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-link::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid var(--color-primary);
+  border-right: 2px solid var(--color-primary);
+  transform: rotate(45deg);
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  color: var(--color-neutral-800);
+  cursor: pointer;
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-close::before,
+.carousel-hotspot .carousel-hotspot-hotspot-close::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 2px;
+  background-color: currentcolor;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.carousel-hotspot .carousel-hotspot-hotspot-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* controls: progress bar + round arrows */
+.carousel-hotspot .carousel-hotspot-controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.carousel-hotspot.no-overflow .carousel-hotspot-controls {
+  display: none;
+}
+
+.carousel-hotspot .carousel-hotspot-progress {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-neutral-300);
+}
+
+.carousel-hotspot .carousel-hotspot-progress span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--carousel-progress, 0%);
+  background-color: var(--color-primary);
+  transition: width 0.2s ease-out;
+}
+
+.carousel-hotspot .carousel-hotspot-nav {
+  display: flex;
+  gap: 12px;
+}
+
+.carousel-hotspot .carousel-hotspot-nav button {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.carousel-hotspot .carousel-hotspot-nav button:hover,
+.carousel-hotspot .carousel-hotspot-nav button:focus-visible {
+  border-color: var(--color-primary-hover);
+  background-color: var(--color-primary-hover);
+}
+
+.carousel-hotspot .carousel-hotspot-nav button:disabled {
+  border-color: var(--color-neutral-400);
+  background-color: transparent;
+  color: var(--color-neutral-400);
+  cursor: default;
+}
+
+.carousel-hotspot .carousel-hotspot-nav button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid currentcolor;
+  border-right: 2px solid currentcolor;
+  transform: translate(-30%, -50%) rotate(-135deg);
+}
+
+.carousel-hotspot .carousel-hotspot-nav .carousel-hotspot-next::after {
+  transform: translate(-70%, -50%) rotate(45deg);
+}
+
+@media (width >= 600px) {
+  .carousel-hotspot {
+    --carousel-gap: 24px;
+    --carousel-per-view: 1.6;
+  }
+}
+
+/* breakpoint-exception: source site switches to its desktop carousel at 1024px (Tailwind lg) */
+@media (width >= 1024px) {
+  .carousel-hotspot {
+    --carousel-per-view: 2.3;
+    --hotspot-slide-height: 516px;
+  }
+}

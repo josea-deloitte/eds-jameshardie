@@ -3,10 +3,12 @@
     "eds-jameshardie": {
       "previewOrg": "josea-deloitte",
       "previewSite": "eds-jameshardie",
-      "contentHostUrl": "https://content.da.live/josea-deloitte/eds-jameshardie/"
+      "contentHostUrl": "https://content.da.live/josea-deloitte/eds-jameshardie/",
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
     }
   },
   "features": [
     "site-planning"
-  ]
+  ],
+  "type": "da"
 }

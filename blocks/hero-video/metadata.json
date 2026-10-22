@@ -1,0 +1,18 @@
+{
+  "variantName": "hero-video",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "full-bleed hero with an autoplaying, muted, looping background video (poster image fallback), dark overlay, left-aligned headline, subheading and CTA, plus a pause/play toggle",
+    "description": "Full-bleed 710px band with autoplay background video (bynder MP4, poster still), dark overlay, left-aligned white H1 (72px bold), subhead, green pill CTA, pause button bottom-right. Background belongs to the block, so no section metadata."
+  },
+  "contentPattern": {
+    "structure": "Row 1: poster image and a link to the MP4 video (same cell or separate cells). Row 2: H1 title, subheading paragraph, CTA link (bold = primary pill button). The video link is removed from the visible content and played as the background; the poster image shows while the video loads and when reduced motion is preferred",
+    "description": "Background video with poster image, H1 \"Design an exterior you will love coming home to\", subheading, CTA \"Start your design\" (/hardie-designer/) | Background MP4 video with poster fallback and pause control instead of a static image; left-aligned white text over dark overlay"
+  },
+  "options": [],
+  "memberVariantIds": [],
+  "sourceUrl": "https://www.jameshardie.com/",
+  "usage": "Use as the first block of a landing page when the source hero has a background video.",
+  "reuseGuidance": "For a static image hero use the base hero block."
+}
