@@ -1,7 +1,7 @@
 .tabs-video .tabs-video-list {
   display: flex;
   justify-content: flex-start;
-  gap: 24px;
+  gap: 8px;
   max-width: 100%;
   margin-bottom: 32px;
   overflow-x: auto;
@@ -14,7 +14,8 @@
 }
 
 .tabs-video .tabs-video-tab {
-  flex: 0 0 auto;
+  flex: 1 1 0;
+  min-width: 0;
   margin: 0;
   padding: 12px 4px;
   border: 0;
@@ -26,7 +27,7 @@
   font-size: var(--heading-font-size-xs);
   font-weight: 700;
   line-height: var(--heading-line-height-xs);
-  white-space: nowrap;
+  text-align: center;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
 }
@@ -45,7 +46,7 @@
 .tabs-video .tabs-video-panel {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
 }
 
 .tabs-video .tabs-video-panel[hidden] {
@@ -59,7 +60,10 @@
 .tabs-video .tabs-video-media {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 1194 / 834;
+
+  /* source stacks the video above the copy on small screens */
+  order: -1;
+  aspect-ratio: 16 / 9;
   border-radius: 8px;
   background-color: var(--dark-color);
 }
@@ -127,6 +131,11 @@
     justify-content: center;
     gap: 40px;
   }
+
+  .tabs-video .tabs-video-tab {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
 }
 
 /* breakpoint-exception: source site switches to its desktop layout at 1024px (Tailwind lg) */
@@ -146,12 +155,14 @@
     gap: 64px;
   }
 
+  /* source: copy on the left, video fills the right half */
   .tabs-video .tabs-video-text {
-    flex: 1 1 40%;
+    flex: 1 1 0;
   }
 
   .tabs-video .tabs-video-media {
-    flex: 1 1 60%;
+    flex: 0 0 50%;
+    order: 0;
   }
 
   .tabs-video .tabs-video-panel.no-media .tabs-video-text {

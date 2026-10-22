@@ -3,7 +3,7 @@
   "baseBlock": "tabs",
   "canonicalModel": "standalone",
   "visualCharacteristics": {
-    "purpose": "centered underline tab bar; each panel shows text (H2, paragraph, optional CTA) beside an autoplaying looping muted video in a dark rounded box with a pause/play toggle",
+    "purpose": "centered underline tab bar; each panel shows text (H2, paragraph, optional CTA) beside a 16:9 autoplaying looping muted video in a dark rounded box with a pause/play toggle; on mobile the video stacks above the text and tab labels wrap",
     "description": "Centered horizontal tab bar (4 labels rendered as h4 inside buttons, active tab underlined in green). Each panel is a side-by-side layout: H2 + text + optional text link on the left, autoplay looping video in a dark rounded box with pause button on the right."
   },
   "contentPattern": {

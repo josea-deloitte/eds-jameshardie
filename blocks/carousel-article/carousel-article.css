@@ -1,6 +1,7 @@
 .carousel-article {
   --carousel-gap: 16px;
-  --carousel-per-view: 1.15;
+  --carousel-per-view: 4;
+  --carousel-slide-width: 303px;
 
   position: relative;
 }
@@ -28,7 +29,7 @@
 .carousel-article .carousel-article-slide {
   display: flex;
   flex-direction: column;
-  flex: 0 0 calc((100% - (var(--carousel-gap) * (var(--carousel-per-view) - 1))) / var(--carousel-per-view));
+  flex: 0 0 min(var(--carousel-slide-width), 100%);
   box-sizing: border-box;
   min-width: 0;
   overflow: hidden;
@@ -38,7 +39,7 @@
 }
 
 .carousel-article .carousel-article-image {
-  aspect-ratio: 16 / 10;
+  height: 240px;
   overflow: hidden;
 }
 
@@ -194,13 +195,13 @@
 @media (width >= 600px) {
   .carousel-article {
     --carousel-gap: 24px;
-    --carousel-per-view: 2.15;
   }
 }
 
 /* breakpoint-exception: source site switches to its desktop carousel at 1024px (Tailwind lg) */
 @media (width >= 1024px) {
-  .carousel-article {
-    --carousel-per-view: 3.25;
+  /* four cards per view, like the source */
+  .carousel-article .carousel-article-slide {
+    flex-basis: calc((100% - (var(--carousel-gap) * (var(--carousel-per-view) - 1))) / var(--carousel-per-view));
   }
 }

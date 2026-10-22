@@ -3,7 +3,7 @@
   "baseBlock": "embed",
   "canonicalModel": "standalone",
   "visualCharacteristics": {
-    "purpose": "Sprinklr social (Instagram) gallery; the Sprinklr script is loaded lazily only when the block is scrolled near the viewport",
+    "purpose": "Sprinklr social (Instagram) gallery; the Sprinklr script is loaded lazily only when the block is scrolled near the viewport. A placeholder reserves space until posts render; if the script cannot run (CSP, network, timeout) the block collapses and the section's default-content Follow link remains the fallback",
     "description": "Light warm grey background rgb(246,245,243), 48px/80px padding. Header row: H3 left, text link with arrow right (Instagram). Below: Sprinklr packery-tile social gallery (63 posts, 2 rows of images) with a green \"Load more\" pill."
   },
   "contentPattern": {

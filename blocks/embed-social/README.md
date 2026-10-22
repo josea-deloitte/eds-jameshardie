@@ -1,6 +1,6 @@
 # embed-social
 
-Custom **embed** block. Purpose: Sprinklr social (Instagram) gallery; the Sprinklr script is loaded lazily only when the block is scrolled near the viewport.
+Custom **embed** block. Purpose: Sprinklr social (Instagram) gallery; the Sprinklr script is loaded lazily only when the block is scrolled near the viewport. A placeholder reserves space until posts render; if the script cannot run (CSP, network, timeout) the block collapses and the section's default-content Follow link remains the fallback.
 
 ## Authoring (Document Authoring)
 

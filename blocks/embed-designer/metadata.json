@@ -3,8 +3,8 @@
   "baseBlock": "embed",
   "canonicalModel": "standalone",
   "visualCharacteristics": {
-    "purpose": "lazy-loaded 16:9 iframe of the Hover home exterior designer with a light footer bar for attribution links",
-    "description": "80px padded band, transparent background. Large dark 16:9 iframe (hover.to designer embed-container, colorMode=dark) with a light-grey 56px footer bar carrying a \"Hover\" logo link (https://hover.to/wr/properties). Visual-tree hint is default-content, but an iframe cannot be authored as default content, so it is mapped to an embed block."
+    "purpose": "lazy-loaded iframe of the Hover home exterior designer (600px tall on mobile, 800px from 1024px) with a centered light footer bar for attribution links; a plain link to the designer shows until the iframe loads",
+    "description": "80px padded band, transparent background. Large dark full-width iframe (600px mobile / 800px desktop) (hover.to designer embed-container, colorMode=dark) with a light-grey 56px footer bar carrying a \"Hover\" logo link (https://hover.to/wr/properties). Visual-tree hint is default-content, but an iframe cannot be authored as default content, so it is mapped to an embed block."
   },
   "contentPattern": {
     "structure": "One cell: link to the Hover designer embed-container URL (https://hover.to/designer/embed-container?...). Any additional links (e.g. the Hover attribution link) are rendered in the footer bar. An optional heading sets the iframe title",
