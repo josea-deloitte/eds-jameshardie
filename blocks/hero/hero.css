@@ -86,7 +86,7 @@
 
 .hero a.button.secondary:hover,
 .hero a.button.secondary:focus-visible {
-  background-color: rgb(255 255 255 / 15%);
+  background-color: var(--color-white-tint);
   color: var(--color-white);
 }
 

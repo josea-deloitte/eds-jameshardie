@@ -156,7 +156,7 @@ header nav {
 header .nav-main {
   order: 1;
   background-color: var(--color-white);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-s);
 }
 
 header .nav-bar {

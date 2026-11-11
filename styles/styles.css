@@ -250,9 +250,9 @@ button.button.primary:focus-visible {
 
 a.button.primary[aria-disabled="true"],
 button.button.primary:disabled {
-  border-color: var(--color-neutral-300);
-  background-color: var(--color-neutral-300);
-  color: var(--color-neutral-400);
+  border-color: var(--color-disabled-bg);
+  background-color: var(--color-disabled-bg);
+  color: var(--color-disabled-text);
 }
 
 /* secondary: green outline pill */
@@ -274,9 +274,9 @@ button.button.secondary:focus-visible {
 
 a.button.secondary[aria-disabled="true"],
 button.button.secondary:disabled {
-  border-color: var(--color-neutral-300);
+  border-color: var(--color-disabled-bg);
   background-color: transparent;
-  color: var(--color-neutral-400);
+  color: var(--color-disabled-text);
 }
 
 /* accent: compact tag pill (e.g. "Get a Quote") */
@@ -417,7 +417,7 @@ main .section.primary-band a.button.secondary {
 
 main .section.primary-band a.button.secondary:hover,
 main .section.primary-band a.button.secondary:focus-visible {
-  background-color: rgb(255 255 255 / 15%);
+  background-color: var(--color-white-tint);
   color: var(--color-white);
 }
 
@@ -445,11 +445,23 @@ main > .section.padding-medium {
 }
 
 main .section.centered .default-content-wrapper {
-  max-width: 768px;
+  max-width: var(--intro-max-width);
   text-align: center;
+}
+
+main .section.centered .default-content-wrapper > p:not(.button-wrapper) {
+  color: var(--paragraph-color);
+  font-size: var(--intro-font-size);
+  line-height: var(--intro-line-height);
 }
 
 main .section.article .default-content-wrapper {
   max-width: var(--article-max-width);
   padding: 0 16px;
+}
+
+/* large button (48px), for CTAs that need extra emphasis */
+a.button.large,
+button.button.large {
+  min-height: var(--button-height-lg);
 }
