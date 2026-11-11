@@ -9,8 +9,20 @@ helix-importer-ui
 .idea
 
 # Ensure these files are tracked
-!CLAUDE.md
-!AGENTS.md
+CLAUDE.md
+AGENTS.md
 
 migration-work/navigation-validation/
 migration-work/footer-validation/
+
+reports/**
+.claude/**
+.codex/**
+**/.DS_Store
+**/__pycache__/
+.claude/hooks/state/
+.codex/hooks/state/
+.claude/skills/eds/scrape-webpage/scripts/node_modules/
+.claude/skills/eds/scrape-webpage/scripts/full-page.png
+.claude/skills/eds/scrape-webpage/scripts/s[0-9][0-9].png
+.claude/skills/eds/scrape-webpage/scripts/sections-manifest.json

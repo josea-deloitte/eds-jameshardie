@@ -90,7 +90,7 @@
   padding: 0;
   border: 2px solid var(--color-white);
   border-radius: 50%;
-  background-color: rgb(51 51 51 / 30%);
+  background-color: var(--color-overlay);
   color: var(--color-white);
   cursor: pointer;
 }

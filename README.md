@@ -1,5 +1,5 @@
-# Your Project's Title...
-Your project's description...
+# James Hardie EDS
+James Hardie Migration Project
 
 ## Environments
 - Preview: https://main--eds-jameshardie--josea-deloitte.aem.page/

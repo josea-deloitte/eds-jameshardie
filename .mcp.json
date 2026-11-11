@@ -1,0 +1,16 @@
+{
+    "mcpServers": {
+        "figma-desktop": {
+            "type": "http",
+            "url": "http://127.0.0.1:3845/mcp"
+        },
+        "azure-devops": {
+            "command": "npx",
+            "args": ["-y", "@azure-devops/mcp", "YOUR_ORG"]
+        },
+        "chrome-devtools": {
+            "command": "npx",
+            "args": ["-y", "chrome-devtools-mcp@latest"]
+        }
+    }
+}
