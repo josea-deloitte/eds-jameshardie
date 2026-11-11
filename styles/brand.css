@@ -36,6 +36,7 @@
   --section-bg-beige: #d4ccc4;
   --section-bg-light: #f6f5f3;
   --section-bg-dark: #333;
+  --section-bg-primary: var(--color-primary);
   --section-bg-white: #fff;
   --utility-nav-bg: #333;
   --utility-nav-color: #fff;
@@ -97,6 +98,8 @@
   --article-max-width: 628px;
   --section-padding-block: 40px;
   --section-padding-inline: 16px;
+  --section-padding-block-small: 24px;
+  --section-padding-block-medium: 64px;
   --nav-height: 80px;
 
   /* shape */

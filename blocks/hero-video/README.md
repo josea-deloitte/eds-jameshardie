@@ -1,17 +1,44 @@
-# hero-video
+# Hero Video
 
-Custom **hero** block. Purpose: full-bleed hero with an autoplaying, muted, looping background video (poster image fallback), dark overlay, left-aligned headline, subheading and CTA, plus a pause/play toggle.
+## 1. Purpose and where it is used
+Full-bleed hero with a muted, looping background video, a poster image, a dark overlay, headline, text and a button, plus a pause/play button. Used at the top of the home page ("Design an exterior you'll love coming home to", button "Start your design"). Use the Hero block for a static image.
 
-## Authoring (Document Authoring)
+## 2. DA table structure
+Header row: `Hero Video`.
 
-Model: `standalone`
+| Row / cell | Required | Notes |
+|---|---|---|
+| Poster image | Recommended | Shown while the video loads and when the visitor prefers reduced motion. Without it the block uses a dark background |
+| Link to the video file (`.mp4`, `.webm`, ...) | Yes for video | Same cell as the image or its own. The link is hidden; the video plays behind the text. Without it the block is a static hero |
+| Text cell: H1, paragraph, button | H1 required | Any other cell content is treated as foreground text |
 
-Single block table. Content: Row 1: poster image and a link to the MP4 video (same cell or separate cells). Row 2: H1 title, subheading paragraph, CTA link (bold = primary pill button). The video link is removed from the visible content and played as the background; the poster image shows while the video loads and when reduced motion is preferred.
+## 3. Variants
+- Default is white text, left aligned (the live home hero).
+- `white` and `left` can be added explicitly: `Hero Video (white, left)`.
+- `center` centers the text.
 
-## Supported variations
+## 4. Formatting rules
+- Images: poster at least 1600px wide, same framing as the video. The video is decorative, so no key information goes in it.
+- Buttons: bold link = primary green button, italic = secondary, bold+italic = accent.
+- Headings: exactly one H1 per page.
+- Keep text short; it sits over moving video.
 
-No variations.
+## 5. Section styles
+No section style needed: the block fills the width. Do not add a section background.
 
-## Universal Editor fields
+## 6. Copy-ready example
+| Hero Video (white, left) |
+|---|
+| (poster image) [video](https://example.com/hero.mp4) |
+| # Design an exterior you'll love coming home to |
+| As North America's #1 brand of siding, Hardie fiber cement products offer leading beauty and lasting resilience. |
+| **[Start your design](/hardie-designer/)** |
 
-N/A (Document Authoring project)
+Common mistakes
+- Linking a YouTube/Vimeo page instead of a direct video file (ignored).
+- No poster image (flash of dark background).
+- More than one H1, or long paragraphs.
+- Expecting autoplay with reduced motion: the video does not play; the visitor can press play.
+
+## 7. Accessibility notes
+The background video is hidden from screen readers; never put key information only in the video. The pause/play button is keyboard operable and labelled. Videos must not flash. Button text must say where it goes ("Start your design").

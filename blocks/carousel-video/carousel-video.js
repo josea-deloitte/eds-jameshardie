@@ -26,7 +26,8 @@ function bindCarousel(block, track) {
     const list = slides();
     if (!list.length) return;
     const target = Math.max(0, Math.min(list.length - 1, currentIndex() + dir));
-    track.scrollTo({ left: offsetOf(list[target]), behavior: 'smooth' });
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    track.scrollTo({ left: offsetOf(list[target]), behavior: reduceMotion ? 'auto' : 'smooth' });
   };
 
   let ticking = false;
@@ -115,6 +116,7 @@ function openPlayer(block, src, title, opener) {
  * Builds one video card from an authored row (poster cell + title/link cell).
  */
 function buildCard(block, row) {
+  const withText = block.classList.contains('body-text');
   const li = document.createElement('li');
   li.className = `${BLOCK}-slide`;
 
@@ -149,7 +151,7 @@ function buildCard(block, row) {
     card.append(play);
   }
 
-  if (titleText || heading) {
+  if (!withText && (titleText || heading)) {
     const title = document.createElement('span');
     title.className = `${BLOCK}-title`;
     if (heading) title.append(...heading.childNodes);
@@ -160,15 +162,44 @@ function buildCard(block, row) {
 
   if (videoLink) {
     const { href } = videoLink;
+    // the card is a native <button>, so Enter and Space already trigger click
     if (VIDEO_RE.test(href)) {
       card.addEventListener('click', () => openPlayer(block, href, titleText, card));
     } else {
       // not a video file: behave like a normal link
       card.addEventListener('click', () => { window.location.href = href; });
     }
+  } else if (withText && picture) {
+    // without a link there is nothing to play: keep the poster as a plain image
+    card.setAttribute('role', 'img');
+    card.setAttribute('aria-label', img?.alt || titleText || 'Video poster');
   }
 
   li.append(card);
+
+  // body-text variant: headline and body copy sit below the media card
+  if (withText) {
+    li.classList.add(`${BLOCK}-slide-text`);
+    const text = document.createElement('div');
+    text.className = `${BLOCK}-text`;
+    if (heading) {
+      heading.classList.add(`${BLOCK}-headline`);
+      heading.querySelectorAll('a').forEach((a) => a.replaceWith(...a.childNodes));
+      text.append(heading);
+    } else if (titleText) {
+      const p = document.createElement('p');
+      p.className = `${BLOCK}-headline`;
+      p.textContent = titleText;
+      text.append(p);
+    }
+    [...row.querySelectorAll('p')]
+      .filter((p) => !p.querySelector('picture, a, img') && p.textContent.trim())
+      .forEach((p) => {
+        p.classList.add(`${BLOCK}-body`);
+        text.append(p);
+      });
+    if (text.children.length) li.append(text);
+  }
   return li;
 }
 

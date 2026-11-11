@@ -13,6 +13,6 @@
   "options": [],
   "memberVariantIds": [],
   "sourceUrl": "https://www.jameshardie.com/",
-  "usage": "Use for lookbook product imagery where each photo calls out one or more products.",
+  "usage": "Use for lookbook product imagery where each photo calls out one or more products. See README.md for the authoring table.",
   "reuseGuidance": "For article cards use carousel-article; for video cards use carousel-video."
 }

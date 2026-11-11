@@ -40,7 +40,8 @@ function bindCarousel(block, track) {
     const list = slides();
     if (!list.length) return;
     const target = Math.max(0, Math.min(list.length - 1, currentIndex() + dir));
-    track.scrollTo({ left: offsetOf(list[target]), behavior: 'smooth' });
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    track.scrollTo({ left: offsetOf(list[target]), behavior: reduceMotion ? 'auto' : 'smooth' });
   };
 
   let ticking = false;

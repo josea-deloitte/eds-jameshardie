@@ -29,7 +29,8 @@ function setState(media, playing) {
 
 function play(media, force = false) {
   const video = media.querySelector('video');
-  if (!video) return;
+  // controls variant: the viewer starts playback with the native controls
+  if (!video || media.dataset.controls === 'true') return;
   if (!video.getAttribute('src')) video.src = video.dataset.src;
   if (!force && (media.dataset.userPaused === 'true' || prefersReducedMotion())) {
     setState(media, false);
@@ -45,13 +46,26 @@ function pause(media) {
   if (video && !video.paused) video.pause();
 }
 
-function buildMedia(videoLink, picture) {
+function buildMedia(videoLink, picture, controls = false, label = '') {
   const media = document.createElement('div');
   media.className = 'tabs-video-media';
   if (picture) media.append(picture);
   if (!videoLink) return media;
 
   const video = document.createElement('video');
+  if (controls) {
+    // non-autoplay variant: native controls, sound on, no loop, no custom toggle
+    media.dataset.controls = 'true';
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = 'none';
+    video.src = videoLink.href;
+    if (label) video.setAttribute('aria-label', label);
+    const still = picture && picture.querySelector('img');
+    if (still) video.poster = still.currentSrc || still.src;
+    media.append(video);
+    return media;
+  }
   video.muted = true;
   video.loop = true;
   video.playsInline = true;
@@ -87,7 +101,7 @@ function buildMedia(videoLink, picture) {
  * Splits a panel cell into text and media. The first link pointing to a video
  * file becomes the panel video; everything else stays as text content.
  */
-function buildPanel(cells) {
+function buildPanel(cells, controls, label) {
   const text = document.createElement('div');
   text.className = 'tabs-video-text';
   cells.forEach((cell) => text.append(...cell.childNodes));
@@ -103,12 +117,14 @@ function buildPanel(cells) {
       wrapper.remove();
     }
   }
-  const media = (videoLink || picture) ? buildMedia(videoLink, picture) : null;
+  const media = (videoLink || picture) ? buildMedia(videoLink, picture, controls, label) : null;
   return { text, media };
 }
 
 export default function decorate(block) {
   tabsId += 1;
+  const controls = block.classList.contains('controls') || block.classList.contains('no-autoplay');
+  if (controls) block.classList.add('controls');
   const tablist = document.createElement('div');
   tablist.className = 'tabs-video-list';
   tablist.setAttribute('role', 'tablist');
@@ -129,7 +145,7 @@ export default function decorate(block) {
     while (usedIds.has(id)) id = `${id}-${buttons.length + 1}`;
     usedIds.add(id);
 
-    const { text, media } = buildPanel(cells);
+    const { text, media } = buildPanel(cells, controls, labelText);
     const panel = document.createElement('div');
     panel.className = 'tabs-video-panel';
     panel.id = `tabpanel-${id}`;

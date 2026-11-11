@@ -1,15 +1,26 @@
+import { getMetadata } from '../../scripts/aem.js';
+
 const SECTION_NAMES = ['social', 'links', 'brand', 'legal', 'utility'];
 
 /**
- * Fetches the footer fragment. Tries the local content path first, then the site root (DA/EDS).
+ * Fetches the footer fragment: `footer` metadata path or /footer (DA), then /content/footer.
  * @returns {Promise<{html: string, base: string}|null>}
  */
 async function fetchFooter() {
-  // metadata-independent: /content first (localhost), then root (DA/EDS prod)
-  let resp = await fetch('/content/footer.plain.html');
-  if (!resp.ok) resp = await fetch('/footer.plain.html');
-  if (!resp.ok) return null;
-  return { html: await resp.text(), base: new URL(resp.url, window.location.href).href };
+  // authored path: `footer` page metadata, else DA's /footer; /content/footer is the local fallback
+  const metaPath = getMetadata('footer');
+  const docPath = metaPath ? new URL(metaPath, window.location).pathname : '/footer';
+  const paths = [`${docPath.replace(/\/$/, '')}.plain.html`, '/content/footer.plain.html'];
+  for (let i = 0; i < paths.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    const resp = await fetch(paths[i]);
+    if (resp.ok) {
+      // eslint-disable-next-line no-await-in-loop
+      const html = await resp.text();
+      return { html, base: new URL(resp.url, window.location.href).href };
+    }
+  }
+  return null;
 }
 
 /**
@@ -20,6 +31,14 @@ async function fetchFooter() {
 function resolveImages(root, base) {
   root.querySelectorAll('img[src]').forEach((img) => {
     const src = img.getAttribute('src');
+    // hide broken imports (about:error); the link keeps the image alt as its label
+    if (/^about:/.test(src || '')) {
+      img.removeAttribute('src');
+      img.hidden = true;
+      const link = img.closest('a');
+      if (link && !link.textContent.trim() && img.alt) link.setAttribute('aria-label', img.alt);
+      return;
+    }
     if (!/^(https?:)?\/\//.test(src) && !src.startsWith('/')) img.src = new URL(src, base).href;
     img.loading = 'lazy';
   });
@@ -69,6 +88,16 @@ function decorateSocial(section) {
   section.querySelector('ul')?.classList.add('footer-social-list');
   section.querySelectorAll('.footer-social-list a').forEach((a) => {
     const img = a.querySelector('img');
+    // broken about:error icons: drop the image, show the network name as text
+    if (img?.hidden) {
+      img.closest('picture')?.remove();
+      img.remove();
+      a.textContent = img.alt;
+      a.classList.add('footer-social-text');
+      a.target = '_blank';
+      a.rel = 'noopener';
+      return;
+    }
     if (img) a.setAttribute('aria-label', img.alt);
     a.target = '_blank';
     a.rel = 'noopener';
@@ -137,7 +166,7 @@ function decorateUtility(section) {
       button.addEventListener('click', () => document.querySelector('header .nav-location-button')?.click());
       li.replaceChildren(button);
       li.classList.add('footer-utility-location');
-      inlineIcon(img);
+      if (!img.hidden) inlineIcon(img);
     } else {
       li.classList.add('footer-utility-pill');
     }

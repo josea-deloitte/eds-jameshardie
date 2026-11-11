@@ -351,10 +351,10 @@ main > .section > .default-content-wrapper > :first-child {
   margin-top: 0;
 }
 
-/* section metadata */
+/* section metadata: background styles */
 main .section.light,
 main .section.highlight {
-  background-color: var(--color-secondary-light);
+  background-color: var(--section-bg-light);
 }
 
 main .section.grey {
@@ -362,30 +362,86 @@ main .section.grey {
 }
 
 main .section.beige {
-  background-color: var(--color-secondary);
-}
-
-main .section.dark,
-main .section.green {
-  color: var(--color-white);
+  background-color: var(--section-bg-beige);
 }
 
 main .section.dark {
-  background-color: var(--color-neutral-950);
+  background-color: var(--section-bg-dark);
 }
 
 main .section.green {
   background-color: var(--color-primary-dark);
 }
 
-main .section.dark :is(h1, h2, h3, h4, h5, h6, p),
-main .section.green :is(h1, h2, h3, h4, h5, h6, p) {
+main .section.primary-band {
+  background-color: var(--section-bg-primary);
+}
+
+/* text on dark, green and primary-band sections (white on #333 / #163c20 / #00833e >= 4.5:1) */
+main .section.dark,
+main .section.green,
+main .section.primary-band {
+  color: var(--color-white);
+}
+
+main .section.dark :is(h1, h2, h3, h4, h5, h6, p, li),
+main .section.green :is(h1, h2, h3, h4, h5, h6, p, li),
+main .section.primary-band :is(h1, h2, h3, h4, h5, h6, p, li) {
   color: var(--color-white);
 }
 
 main .section.dark a:any-link:not(.button),
-main .section.green a:any-link:not(.button) {
+main .section.green a:any-link:not(.button),
+main .section.primary-band a:any-link:not(.button) {
   color: var(--color-white);
+}
+
+/* buttons on the green band: invert so they stay visible against the green */
+main .section.primary-band a.button.primary {
+  border-color: var(--color-white);
+  background-color: var(--color-white);
+  color: var(--color-primary);
+}
+
+main .section.primary-band a.button.primary:hover,
+main .section.primary-band a.button.primary:focus-visible {
+  border-color: var(--color-white);
+  background-color: var(--color-secondary-light);
+  color: var(--color-primary-hover);
+}
+
+main .section.primary-band a.button.secondary {
+  border-color: var(--color-white);
+  color: var(--color-white);
+}
+
+main .section.primary-band a.button.secondary:hover,
+main .section.primary-band a.button.secondary:focus-visible {
+  background-color: rgb(255 255 255 / 15%);
+  color: var(--color-white);
+}
+
+/* section metadata: vertical padding (overrides the first-of-type reset when authored) */
+main > .section.padding-none {
+  padding-block: 0;
+}
+
+main > .section.padding-small {
+  padding-block: var(--section-padding-block-small);
+}
+
+main > .section.padding-medium {
+  padding-block: var(--section-padding-block-medium);
+}
+
+@media (width < 1024px) {
+  main > .section.no-mobile-padding {
+    padding-block: 0;
+  }
+
+  main > .section.no-mobile-padding > div {
+    padding-inline: 0;
+  }
 }
 
 main .section.centered .default-content-wrapper {

@@ -32,7 +32,7 @@ footer .footer-inner {
   margin: 0 auto;
   padding: 40px 16px;
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 22px;
 }
 
@@ -49,7 +49,7 @@ footer .footer-social {
 
 footer .footer-social h3 {
   color: var(--color-white);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   font-weight: 700;
   line-height: 22px;
 }
@@ -66,6 +66,14 @@ footer .footer-social-list a:any-link {
   width: 32px;
   height: 32px;
   color: var(--color-white);
+}
+
+footer .footer-social-list a.footer-social-text:any-link {
+  width: auto;
+  height: auto;
+  font-size: var(--body-font-size-s);
+  line-height: 32px;
+  text-decoration: underline;
 }
 
 footer .footer-social-list svg,
@@ -202,7 +210,7 @@ footer .footer-bottom {
   gap: 0;
   border-top: 1px solid var(--color-neutral-600);
   padding-top: 16px;
-  font-size: 12px;
+  font-size: var(--body-font-size-xs);
   line-height: 18px;
 }
 
@@ -234,7 +242,7 @@ footer .footer-utility-pill a:any-link {
   padding: 3.2px 12px;
   background-color: var(--color-neutral-100);
   color: var(--color-neutral-800);
-  font-size: 14px;
+  font-size: var(--body-font-size-s);
   line-height: 23px;
   white-space: nowrap;
   transition: background-color 0.15s, color 0.15s;
@@ -255,7 +263,7 @@ footer .footer-location-button {
   background: none;
   color: var(--color-white);
   font: inherit;
-  font-size: 14px;
+  font-size: var(--body-font-size-s);
   cursor: pointer;
 }
 
@@ -356,7 +364,18 @@ footer .footer-location-button {
 
   footer .footer-utility-pill a:any-link,
   footer .footer-location-button {
-    font-size: 12px;
+    font-size: var(--body-font-size-xs);
     line-height: 18px;
   }
 }
+
+/* motion: honor the reduced-motion preference for every transition and animation */
+@media (prefers-reduced-motion: reduce) {
+  footer *,
+  footer *::before,
+  footer *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+

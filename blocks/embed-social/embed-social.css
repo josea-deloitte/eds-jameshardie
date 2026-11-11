@@ -5,17 +5,28 @@
 /* reserve space while the third-party gallery has not rendered yet */
 .embed-social .embed-social-stage.is-loading {
   min-height: 480px;
-  border-radius: 4px;
+  border-radius: var(--radius-card);
   background-color: var(--color-neutral-200);
 }
 
-.embed-social [id^="sprinklr-embed-"] {
+.embed-social [id^="sprinklr-embed-"],
+.embed-social .stackla-widget {
   width: 100%;
 }
 
-/* gallery blocked or failed: collapse; the section's "Follow" link remains */
+/* gallery blocked or failed: swap the stage for the authored fallback link */
+.embed-social.is-unavailable .embed-social-stage {
+  display: none;
+}
+
+.embed-social .embed-social-fallback {
+  margin: 0;
+  text-align: center;
+}
+
+/* nothing authored, or failed with no fallback link: collapse */
 .embed-social.is-empty,
-.embed-social.is-unavailable {
+.embed-social.is-unavailable:not(:has(.embed-social-fallback)) {
   display: none;
 }
 

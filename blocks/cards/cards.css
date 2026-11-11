@@ -3,25 +3,169 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
+  grid-template-columns: 1fr;
   gap: 24px;
 }
 
 .cards > ul > li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
   border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-card);
   background-color: var(--background-color);
+  box-shadow: var(--shadow-m);
+  overflow: hidden;
 }
 
 .cards .cards-card-body {
+  flex: 1;
   margin: 16px;
+}
+
+.cards .cards-card-body > :last-child {
+  margin-bottom: 0;
+}
+
+.cards .cards-card-body h2,
+.cards .cards-card-body h3,
+.cards .cards-card-body h4 {
+  margin: 0 0 8px;
+}
+
+.cards .cards-card-body p {
+  margin: 0 0 16px;
 }
 
 .cards .cards-card-image {
   line-height: 0;
 }
 
-.cards > ul > li img {
+.cards .cards-card-image img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+/* icon cells (icon, popular-link variants) */
+.cards .cards-card-icon {
+  margin: 24px 16px 0;
+  line-height: 0;
+}
+
+.cards .cards-card-icon img,
+.cards .cards-card-icon .icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+/* whole card is clickable when it holds a single link */
+.cards .cards-card-linked .cards-card-body a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.cards .cards-card-linked:focus-within {
+  outline: 2px solid var(--focus-ring-color);
+  outline-offset: 2px;
+}
+
+.cards .cards-card-linked a:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cards .cards-card-linked {
+    transition: box-shadow 0.2s ease-in-out;
+  }
+}
+
+.cards .cards-card-linked:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* icon: value propositions, centered stack */
+.cards.icon > ul > li {
+  align-items: center;
+  border: 0;
+  box-shadow: none;
+  text-align: center;
+}
+
+.cards.icon .cards-card-body {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* help: image optional, title + text + link */
+.cards.help > ul > li {
+  border-color: var(--color-primary);
+}
+
+.cards.help .cards-card-image img {
+  aspect-ratio: 16 / 9;
+}
+
+/* popular-link: icon, title, text, "See more" link */
+.cards.popular-link > ul > li {
+  background-color: var(--section-bg-light);
+}
+
+.cards.popular-link .cards-card-body p:last-child a {
+  color: var(--link-color);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--link-underline-color);
+  text-underline-offset: 4px;
+}
+
+/* stat: big figure (H2), no icon */
+.cards.stat > ul > li {
+  border: 0;
+  box-shadow: none;
+  background-color: transparent;
+  text-align: center;
+}
+
+.cards.stat .cards-card-body h2 {
+  margin-bottom: 8px;
+  color: var(--color-primary);
+  font-size: var(--display-font-size);
+  line-height: var(--display-line-height);
+}
+
+/* product: listing card, image first, CTA pinned to the bottom */
+.cards.product .cards-card-image img {
+  aspect-ratio: 1;
+  object-fit: contain;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.cards.product .cards-card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.cards.product .cards-card-body .button-wrapper {
+  margin-top: auto;
+}
+
+@media (width >= 768px) {
+  .cards > ul {
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
+  }
+}
+
+@media (width >= 1024px) {
+  .cards > ul {
+    gap: 32px;
+  }
+
+  .cards.stat > ul {
+    grid-template-columns: repeat(auto-fit, minmax(var(--card-width), 1fr));
+  }
 }

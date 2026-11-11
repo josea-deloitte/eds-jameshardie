@@ -42,7 +42,7 @@
   min-width: 0;
   margin: 0;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: var(--radius-card);
   background-color: var(--color-white);
   box-shadow: var(--shadow-md), var(--shadow-m);
   scroll-snap-align: start;
@@ -52,7 +52,7 @@
   flex: 0 0 auto;
   height: 240px;
   overflow: hidden;
-  border-radius: 4px 4px 0 0;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
 }
 
 .carousel-article .carousel-article-image a:any-link,
@@ -87,6 +87,19 @@
 
 .carousel-article .carousel-article-body > * {
   margin: 0;
+}
+
+/* optional card description */
+.carousel-article .carousel-article-description {
+  display: -webkit-box;
+  padding: 0 8px;
+  overflow: hidden;
+  color: var(--paragraph-color);
+  font-size: var(--body-font-size-s);
+  line-height: var(--body-line-height);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
 }
 
 /* title row: clamped title + diagonal arrow icon */
@@ -250,6 +263,10 @@
 
 /* breakpoint-exception: source card body/title switch at 768px (Tailwind md) */
 @media (width >= 768px) {
+  .carousel-article .carousel-article-description {
+    padding: 0 16px;
+  }
+
   .carousel-article .carousel-article-title {
     padding: 0 16px;
     font-size: var(--heading-font-size-m);
@@ -372,5 +389,17 @@ main .section:has(> .carousel-article-wrapper) > .default-content-wrapper > p > 
   main .section:has(> .carousel-article-wrapper) > .default-content-wrapper > p:has(> a:only-child) {
     flex: 0 0 auto;
     padding-top: 0;
+  }
+}
+
+/* motion: no smooth scrolling or zoom for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+  .carousel-article .carousel-article-track {
+    scroll-behavior: auto;
+  }
+
+  .carousel-article .carousel-article-slide:hover .carousel-article-image img {
+    transform: none;
+    transition: none;
   }
 }

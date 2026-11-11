@@ -1,6 +1,11 @@
 .columns > div {
   display: flex;
   flex-direction: column;
+  gap: 24px;
+}
+
+.columns > div + div {
+  margin-top: 32px;
 }
 
 .columns img {
@@ -19,15 +24,61 @@
   display: block;
 }
 
-@media (width >= 900px) {
+/* eyebrow: small caps label above the heading */
+.columns .columns-eyebrow {
+  margin-bottom: 8px;
+  color: var(--color-primary);
+  font-size: var(--body-font-size-s);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* video: native player, poster, no autoplay */
+.columns .columns-video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background-color: var(--dark-color);
+}
+
+.columns .columns-video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.columns > div > .columns-video-col {
+  order: 0;
+}
+
+@media (width >= 1024px) {
   .columns > div {
     align-items: center;
     flex-direction: unset;
-    gap: 24px;
+    gap: 48px;
+  }
+
+  .columns > div + div {
+    margin-top: 48px;
   }
 
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+
+  /* alternate: media side flips on every second row (DOM order kept for reading order) */
+  .columns.alternate > div:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+
+  /* split-3-1: first cell 3/4, second cell 1/4 */
+  .columns.split-3-1 > div > div:first-child {
+    flex: 3;
+  }
+
+  .columns.split-3-1 > div > div:nth-child(2) {
+    flex: 1;
   }
 }

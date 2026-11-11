@@ -46,7 +46,7 @@ header .nav-promo {
   padding: 16px;
   background-color: var(--color-primary-dark);
   color: var(--color-white);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 22px;
 }
 
@@ -117,7 +117,7 @@ header .nav-utility-pill a:any-link {
   padding: 3.2px 12px;
   background-color: var(--color-neutral-100);
   color: var(--color-neutral-800);
-  font-size: 14px;
+  font-size: var(--body-font-size-s);
   line-height: 23px;
   white-space: nowrap;
   transition: background-color 0.15s, color 0.15s;
@@ -134,7 +134,7 @@ header .nav-location-button {
   gap: 8px;
   height: 32px;
   color: var(--color-neutral-800);
-  font-size: 14px;
+  font-size: var(--body-font-size-s);
   line-height: 20px;
 }
 
@@ -269,7 +269,7 @@ header .nav-item-trigger {
   width: 100%;
   padding: 12px 16px;
   color: var(--color-neutral-800);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   font-weight: 700;
   line-height: 20px;
   text-align: left;
@@ -308,7 +308,7 @@ header .nav-mobile-links .nav-location-button {
   gap: 8px;
   height: 32px;
   color: var(--color-neutral-800);
-  font-size: 14px;
+  font-size: var(--body-font-size-s);
   line-height: 23px;
 }
 
@@ -353,7 +353,7 @@ header .nav-panel-back {
   align-items: center;
   gap: 16px;
   color: var(--color-neutral-800);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   font-weight: 700;
   line-height: 20px;
 }
@@ -385,7 +385,7 @@ header .nav-panel .nav-panel-heading {
   width: 100%;
   padding: 12px 0;
   color: var(--color-neutral-800);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   font-weight: 700;
   line-height: 20px;
   text-align: left;
@@ -416,7 +416,7 @@ header .nav-panel-heading[aria-expanded="true"] + ul {
 
 header .nav-panel a:any-link {
   color: var(--color-neutral-800);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 22px;
 }
 
@@ -469,7 +469,7 @@ header .nav-feature-title {
   margin-bottom: 16px;
   padding-top: 16px;
   color: var(--color-neutral-800);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   font-weight: 700;
   line-height: 22px;
 }
@@ -576,7 +576,7 @@ header .nav-search-form input {
   padding: 0 0 0 16px;
   background-color: var(--color-secondary-tint);
   color: var(--color-neutral-800);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
 }
 
 header .nav-search-form input:focus {
@@ -599,6 +599,16 @@ header .nav-search-submit::before {
   height: 20px;
   margin: auto;
   background-color: var(--color-white);
+  mask: url('/icons/search.svg') center / contain no-repeat;
+}
+
+/* search icon fallback when the authored icon image is missing or broken */
+header .nav-search-button:not(:has(img:not([hidden])))::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-color: var(--color-neutral-800);
   mask: url('/icons/search.svg') center / contain no-repeat;
 }
 
@@ -631,7 +641,7 @@ header .nav-location-current {
   padding: 8px;
   background-color: var(--color-neutral-100);
   color: var(--color-neutral-800);
-  font-size: 14px;
+  font-size: var(--body-font-size-s);
   line-height: 20px;
 }
 
@@ -640,7 +650,7 @@ header .nav-location-zip {
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 24px;
 }
 
@@ -654,7 +664,7 @@ header .nav-location-form {
 header .nav-location-form label {
   margin-bottom: 12px;
   color: var(--color-neutral-800);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   font-weight: 700;
   line-height: 22px;
 }
@@ -668,7 +678,7 @@ header .nav-location .nav-location-field input {
   box-sizing: border-box;
   background: var(--color-secondary-light) url('/icons/search.svg') 12px center / 18px no-repeat;
   color: var(--color-neutral-600);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
 }
 
 header .nav-location-geo {
@@ -676,7 +686,7 @@ header .nav-location-geo {
   margin-top: 32px;
   border-bottom: 2px solid var(--color-primary);
   color: var(--color-neutral-800);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 20px;
 }
 
@@ -685,7 +695,7 @@ header .nav-cart-cta {
   width: 100%;
   border-radius: var(--radius-pill);
   color: var(--color-white);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 24px;
   transition: background-color 0.15s;
 }
@@ -728,14 +738,14 @@ header .nav-cart-empty img {
 header .nav-cart-empty h3 {
   margin: 40px 0 8px;
   color: var(--color-neutral-800);
-  font-size: 20px;
+  font-size: var(--heading-font-size-m);
   font-weight: 700;
   line-height: 28px;
 }
 
 header .nav-cart-empty p {
   color: var(--color-neutral-800);
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 24px;
 }
 
@@ -780,6 +790,8 @@ header .nav-location-submit:not(:disabled):hover {
 
   header .nav-utility {
     border-top: 0;
+    background-color: var(--utility-nav-bg);
+    color: var(--utility-nav-color);
   }
 
   header .nav-utility ul {
@@ -788,18 +800,24 @@ header .nav-location-submit:not(:disabled):hover {
     padding: 8px 80px;
   }
 
+  /* utility bar: light text on the dark bar, links instead of pills */
   header .nav-utility-pill a:any-link {
-    font-size: 12px;
-    line-height: 18px;
+    border-color: transparent;
+    background-color: transparent;
+    color: var(--utility-nav-color);
+    font-size: var(--body-font-size-m);
+    line-height: 24px;
   }
 
-  header .nav-utility-pill a:any-link,
-  header .nav-location-button {
-    font-size: 12px;
+  header .nav-utility-pill a:hover {
+    background-color: transparent;
+    color: var(--utility-nav-color);
+    text-decoration: underline;
   }
 
   header .nav-location-button {
     height: 16px;
+    font-size: var(--body-font-size-xs);
   }
 
   header .nav-bar {
@@ -849,7 +867,7 @@ header .nav-location-submit:not(:disabled):hover {
   header .nav-item-trigger {
     width: auto;
     padding: 12px 12px 8px;
-    font-size: 14px;
+    font-size: var(--body-font-size-s);
     font-weight: 500;
     line-height: 20px;
   }
@@ -945,7 +963,7 @@ header .nav-location-submit:not(:disabled):hover {
 
   header .nav-feature-title {
     max-width: 302px;
-    font-size: 20px;
+    font-size: var(--heading-font-size-m);
     line-height: 24px;
   }
 
@@ -960,5 +978,24 @@ header .nav-location-submit:not(:disabled):hover {
   header .nav-overlay-close {
     top: 21px;
     right: 29px;
+  }
+
+  header .nav-utility .nav-location-button {
+    color: var(--utility-nav-color);
+    font-size: var(--body-font-size-m);
+  }
+
+  header .nav-utility .nav-location-button img {
+    filter: invert(1);
+  }
+}
+
+/* motion: honor the reduced-motion preference for every transition and animation */
+@media (prefers-reduced-motion: reduce) {
+  header *,
+  header *::before,
+  header *::after {
+    transition: none !important;
+    animation: none !important;
   }
 }

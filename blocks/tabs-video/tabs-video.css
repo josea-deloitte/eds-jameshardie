@@ -169,3 +169,18 @@
     flex-basis: 100%;
   }
 }
+
+/* controls variant: native video controls, no custom toggle */
+.tabs-video.controls .tabs-video-toggle {
+  display: none;
+}
+
+.tabs-video.controls .tabs-video-media video {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tabs-video .tabs-video-tab {
+    transition: none;
+  }
+}

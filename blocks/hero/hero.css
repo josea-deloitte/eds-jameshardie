@@ -5,33 +5,210 @@
 
 .hero {
   position: relative;
-  padding: 40px 24px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
   min-height: 300px;
+  padding: 40px var(--section-padding-inline);
+  overflow: hidden;
+  background-color: var(--dark-color);
+}
+
+/* default: full-bleed background image with scrim, white text, left aligned */
+.hero .hero-media {
+  position: absolute;
+  inset: 0;
+}
+
+.hero .hero-media picture,
+.hero .hero-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero .hero-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-scrim);
+}
+
+.hero .hero-content {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  text-align: left;
+}
+
+.hero .hero-content > * {
+  max-width: 640px;
+}
+
+.hero h1,
+.hero p,
+.hero .hero-eyebrow {
+  color: var(--color-white);
 }
 
 .hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: var(--display-font-size);
+  line-height: var(--display-line-height);
 }
 
-.hero picture {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
+.hero .hero-eyebrow {
+  margin-bottom: 8px;
+  font-size: var(--body-font-size-s);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.hero img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
+.hero .button-wrapper {
+  display: inline-block;
+  margin: 12px 12px 0 0;
 }
 
-@media (width >= 900px) {
+.hero a.button.primary:hover,
+.hero a.button.primary:focus-visible {
+  border-color: var(--color-primary-hover);
+}
+
+.hero a.button.secondary {
+  border-color: var(--color-white);
+  color: var(--color-white);
+}
+
+.hero a.button.secondary:hover,
+.hero a.button.secondary:focus-visible {
+  background-color: rgb(255 255 255 / 15%);
+  color: var(--color-white);
+}
+
+/* wide-content: lets the text span more of the band */
+.hero.wide-content .hero-content > * {
+  max-width: 960px;
+}
+
+/* split layouts: media beside text on desktop, stacked on mobile */
+.hero.dark,
+.hero.image-right,
+.hero.white-left {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 24px;
+}
+
+.hero.dark .hero-media,
+.hero.image-right .hero-media,
+.hero.white-left .hero-media {
+  position: static;
+  order: 2;
+}
+
+.hero.dark .hero-media::after,
+.hero.image-right .hero-media::after,
+.hero.white-left .hero-media::after {
+  content: none;
+}
+
+.hero.dark .hero-media img,
+.hero.image-right .hero-media img,
+.hero.white-left .hero-media img {
+  height: auto;
+  aspect-ratio: 4 / 3;
+}
+
+.hero.dark .hero-content,
+.hero.image-right .hero-content,
+.hero.white-left .hero-content {
+  order: 1;
+  margin: 0;
+}
+
+.hero.dark .hero-content > *,
+.hero.image-right .hero-content > *,
+.hero.white-left .hero-content > * {
+  max-width: none;
+}
+
+/* dark theme: #333 background, white text */
+.hero.dark {
+  background-color: var(--section-bg-dark);
+}
+
+/* image-right and white-left: light theme with dark text */
+.hero.image-right,
+.hero.white-left {
+  background-color: var(--section-bg-white);
+}
+
+.hero.image-right h1,
+.hero.white-left h1 {
+  color: var(--heading-color);
+}
+
+.hero.image-right p,
+.hero.white-left p {
+  color: var(--paragraph-color);
+}
+
+.hero.image-right a.button.secondary,
+.hero.white-left a.button.secondary {
+  border-color: var(--color-primary);
+  color: var(--color-neutral-800);
+}
+
+.hero.image-right a.button.secondary:hover,
+.hero.image-right a.button.secondary:focus-visible,
+.hero.white-left a.button.secondary:hover,
+.hero.white-left a.button.secondary:focus-visible {
+  background-color: var(--color-primary-tint);
+  color: var(--color-neutral-800);
+}
+
+@media (width >= 1024px) {
   .hero {
-    padding: 40px 32px;
+    min-height: 480px;
+    padding: 64px var(--section-padding-inline);
+  }
+
+  .hero.dark,
+  .hero.image-right {
+    flex-direction: row;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .hero.dark .hero-content,
+  .hero.image-right .hero-content {
+    flex: 1 1 50%;
+  }
+
+  .hero.dark .hero-media,
+  .hero.image-right .hero-media {
+    flex: 1 1 50%;
+  }
+
+  .hero.wide-content .hero-content {
+    flex-basis: 66%;
+  }
+
+  .hero.wide-content .hero-media {
+    flex-basis: 34%;
+  }
+
+  /* dark with no image: text only, still left aligned */
+  .hero.dark:not(.hero-has-media) .hero-content {
+    flex-basis: 100%;
+  }
+
+  .hero.white-left .hero-media {
+    width: 100%;
   }
 }

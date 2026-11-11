@@ -1,3 +1,5 @@
+import { getMetadata } from '../../scripts/aem.js';
+
 // desktop layout starts at 1024px, matching the source site's breakpoint
 const isDesktop = window.matchMedia('(min-width: 1024px)');
 
@@ -5,15 +7,24 @@ const ZIP_STORAGE_KEY = 'jh-zip';
 const SECTION_NAMES = ['promo', 'utility', 'brand', 'sections', 'tools', 'search', 'location', 'cart', 'mobile'];
 
 /**
- * Fetches the nav fragment. Tries the local content path first, then the site root (DA/EDS).
+ * Fetches the nav fragment: `nav` metadata path or /nav (DA), then /content/nav.
  * @returns {Promise<{html: string, base: string}|null>}
  */
 async function fetchNav() {
-  // metadata-independent: /content first (localhost), then root (DA/EDS prod)
-  let resp = await fetch('/content/nav.plain.html');
-  if (!resp.ok) resp = await fetch('/nav.plain.html');
-  if (!resp.ok) return null;
-  return { html: await resp.text(), base: new URL(resp.url, window.location.href).href };
+  // authored path: `nav` page metadata, else DA's /nav; /content/nav is the local fallback
+  const metaPath = getMetadata('nav');
+  const docPath = metaPath ? new URL(metaPath, window.location).pathname : '/nav';
+  const paths = [`${docPath.replace(/\/$/, '')}.plain.html`, '/content/nav.plain.html'];
+  for (let i = 0; i < paths.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    const resp = await fetch(paths[i]);
+    if (resp.ok) {
+      // eslint-disable-next-line no-await-in-loop
+      const html = await resp.text();
+      return { html, base: new URL(resp.url, window.location.href).href };
+    }
+  }
+  return null;
 }
 
 /**
@@ -24,6 +35,12 @@ async function fetchNav() {
 function resolveImages(root, base) {
   root.querySelectorAll('img[src]').forEach((img) => {
     const src = img.getAttribute('src');
+    // hide broken imports (about:error); alt text still labels buttons
+    if (/^about:/.test(src || '')) {
+      img.removeAttribute('src');
+      img.hidden = true;
+      return;
+    }
     if (!/^(https?:)?\/\//.test(src) && !src.startsWith('/')) img.src = new URL(src, base).href;
     img.loading = 'eager';
   });
@@ -271,7 +288,9 @@ function decoratePanel(panel, trigger, onBack, onClose) {
       const titleText = document.createElement('span');
       titleText.append(...[...col.querySelectorAll('a')].pop().childNodes);
       title.append(titleText);
-      card.append(img, title);
+      // a hidden (broken) image leaves a text-only card
+      if (img.hidden) card.append(title);
+      else card.append(img, title);
       col.replaceChildren(card);
     } else {
       col.classList.add('nav-panel-column');

@@ -1,75 +1,159 @@
-// https://gallery.sprinklr.com/clients/<clientId>/embeds/<embedId>/script.js
-const SPRINKLR_RE = /^\/clients\/(\d+)\/embeds\/([^/]+)\/script\.js$/;
-const DEFAULT_CLIENT_ID = '24392';
-const GALLERY_HOST = 'gallery.sprinklr.com';
+import { toClassName } from '../../scripts/aem.js';
 
-function parseSprinklr(href) {
+// Sprinklr: https://gallery.sprinklr.com/clients/<clientId>/embeds/<embedId>/script.js
+const SPRINKLR_RE = /^\/clients\/(\d+)\/embeds\/([^/]+)\/script\.js$/;
+const SPRINKLR_HOST = 'gallery.sprinklr.com';
+const DEFAULT_CLIENT_ID = '24392';
+// Stackla (Nosto UGC) fluid embed
+const STACKLA_SCRIPT = 'https://assets.stackla.com/media/js/widget/fluid-embed.js';
+
+// how long to wait for the third-party gallery to render before showing the fallback
+const RENDER_TIMEOUT = 10000;
+
+/**
+ * Reads authored key/value rows (e.g. "Client ID | 24392") into a map of
+ * normalized key -> { text, href }. Rows that are not key/value pairs are ignored.
+ */
+function readRows(block) {
+  const rows = {};
+  [...block.children].forEach((row) => {
+    const cells = [...row.children];
+    if (cells.length < 2) return;
+    const key = toClassName(cells[0].textContent);
+    if (!key) return;
+    const a = cells[1].querySelector('a[href]');
+    rows[key] = {
+      text: cells[1].textContent.trim(),
+      href: a ? a.getAttribute('href') : '',
+    };
+  });
+  return rows;
+}
+
+function toUrl(href) {
   try {
-    const url = new URL(href, window.location.href);
-    if (url.protocol !== 'https:' || url.hostname !== GALLERY_HOST) return null;
-    const match = url.pathname.match(SPRINKLR_RE);
-    if (!match) return null;
-    return { src: url.href, clientId: match[1], embedId: match[2] };
+    return new URL(href, window.location.href);
   } catch {
     return null;
   }
 }
 
-/**
- * Builds a Sprinklr script URL from a bare embed id (e.g. an author typed only the id).
- */
-function fromEmbedId(text) {
-  const id = (text || '').trim();
-  if (!/^[A-Za-z0-9_=-]{8,}$/.test(id)) return null;
+function parseSprinklrUrl(href) {
+  const url = toUrl(href);
+  if (!url || url.protocol !== 'https:' || url.hostname !== SPRINKLR_HOST) return null;
+  const match = url.pathname.match(SPRINKLR_RE);
+  return match ? { clientId: match[1], embedId: match[2] } : null;
+}
+
+const isEmbedId = (text) => /^[A-Za-z0-9_=-]{8,}$/.test(text);
+
+function sprinklrConfig(block, rows) {
+  const fromLink = [...block.querySelectorAll('a[href]')]
+    .map((a) => parseSprinklrUrl(a.getAttribute('href'))).find(Boolean);
+  const clientRow = (rows['client-id'] && rows['client-id'].text) || '';
+  let clientId = /^\d+$/.test(clientRow) ? clientRow : DEFAULT_CLIENT_ID;
+  let embedId;
+  if (fromLink) {
+    ({ clientId, embedId } = fromLink);
+  } else {
+    // "Embed ID" row, or legacy single cell holding only the embed id
+    const row = rows['embed-id'] && rows['embed-id'].text;
+    embedId = [row, block.textContent.trim()].find((v) => v && isEmbedId(v));
+  }
+  if (!embedId) return null;
   return {
-    src: `https://gallery.sprinklr.com/clients/${DEFAULT_CLIENT_ID}/embeds/${id}/script.js`,
-    clientId: DEFAULT_CLIENT_ID,
-    embedId: id,
+    provider: 'sprinklr',
+    src: `https://${SPRINKLR_HOST}/clients/${clientId}/embeds/${embedId}/script.js`,
+    clientId,
+    embedId,
   };
 }
 
-// how long to wait for the third-party gallery to render before giving up
-const RENDER_TIMEOUT = 10000;
+function stacklaConfig(rows) {
+  const dataId = rows['data-id'] && rows['data-id'].text;
+  const hash = rows.hash && rows.hash.text;
+  if (!/^\d+$/.test(dataId || '') || !/^[A-Za-z0-9]+$/.test(hash || '')) return null;
+  const title = (rows.title && rows.title.text) || '';
+  return {
+    provider: 'stackla', src: STACKLA_SCRIPT, dataId, hash, title,
+  };
+}
 
-function loadScript(src, onError) {
-  const existing = document.querySelector(`script[src="${src}"]`);
-  if (existing) return;
-  const script = document.createElement('script');
-  script.src = src;
-  script.async = true;
-  script.addEventListener('error', onError, { once: true });
-  document.head.append(script);
+/**
+ * Visible fallback: an authored "Fallback link" row, otherwise the first authored
+ * link that is not the embed script itself (e.g. the Instagram profile link).
+ */
+function findFallback(block, rows) {
+  const row = rows['fallback-link'];
+  if (row && row.href) return { href: row.href, text: row.text || row.href };
+  const a = [...block.querySelectorAll('a[href]')].find((link) => {
+    const url = toUrl(link.getAttribute('href'));
+    return url && !parseSprinklrUrl(url.href) && url.href !== STACKLA_SCRIPT;
+  });
+  return a ? { href: a.getAttribute('href'), text: a.textContent.trim() || a.href } : null;
+}
+
+function buildFallback(fallback) {
+  if (!fallback) return null;
+  const p = document.createElement('p');
+  p.className = 'embed-social-fallback';
+  p.hidden = true;
+  const a = document.createElement('a');
+  a.href = fallback.href;
+  a.textContent = fallback.text;
+  if (/^https?:/.test(a.href) && new URL(a.href).origin !== window.location.origin) {
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+  }
+  p.append(a);
+  return p;
+}
+
+/**
+ * Builds the container(s) the provider script looks for and returns the element
+ * that will receive the rendered gallery.
+ */
+function buildContainers(config, stage) {
+  if (config.provider === 'stackla') {
+    const widget = document.createElement('div');
+    widget.className = 'stackla-widget';
+    widget.dataset.id = config.dataId;
+    widget.dataset.hash = config.hash;
+    if (config.title) widget.dataset.title = config.title;
+    stage.append(widget);
+    return widget;
+  }
+  const controls = document.createElement('div');
+  controls.id = `sprinklr-embed-control-${config.clientId}-${config.embedId}`;
+  controls.className = 'swe_embed_controls';
+  const gallery = document.createElement('div');
+  gallery.id = `sprinklr-embed-${config.clientId}-${config.embedId}`;
+  gallery.className = 'swe_embed';
+  gallery.dataset.filterProduct = '';
+  gallery.dataset.filterVariant = '';
+  stage.append(controls, gallery);
+  return gallery;
 }
 
 /**
  * Tracks the third-party render. The stage keeps its placeholder until the gallery
- * has content ('is-ready'). If the script cannot run (load error, script-src CSP
- * violation, or nothing rendered by the timeout) the block collapses
- * ('is-unavailable'); the section's own "Follow" link stays as the fallback.
- * A late render still wins and flips the block back to 'is-ready'.
+ * has content ('is-ready'). If the script fails to load or nothing has rendered by
+ * the timeout, the stage is replaced by the fallback link ('is-unavailable'); the
+ * block collapses when no fallback was authored. A late render still wins.
  * @returns {Function} call to mark the gallery as failed
  */
-function watchGallery(block, stage, gallery) {
-  const fromGallery = (url) => typeof url === 'string' && url.includes(GALLERY_HOST);
+function watchGallery(block, stage, gallery, fallback) {
   const hasContent = () => gallery.children.length > 0;
   let observer;
   let timer;
 
-  const onViolation = (e) => {
-    if (!/^script-src/.test(e.violatedDirective || e.effectiveDirective || '')) return;
-    // eslint-disable-next-line no-use-before-define
-    if (fromGallery(e.sourceFile) || fromGallery(e.blockedURI)) settle(false);
-  };
-  const stopListening = () => {
-    clearTimeout(timer);
-    document.removeEventListener('securitypolicyviolation', onViolation);
-  };
   function settle(ok) {
+    clearTimeout(timer);
     stage.classList.remove('is-loading');
     stage.removeAttribute('aria-busy');
     block.classList.toggle('is-ready', ok);
     block.classList.toggle('is-unavailable', !ok);
-    stopListening();
+    if (fallback) fallback.hidden = ok;
     if (ok && observer) observer.disconnect();
   }
 
@@ -77,19 +161,24 @@ function watchGallery(block, stage, gallery) {
     observer = new MutationObserver(() => { if (hasContent()) settle(true); });
     observer.observe(gallery, { childList: true });
   }
-  document.addEventListener('securitypolicyviolation', onViolation);
   timer = setTimeout(() => settle(hasContent()), RENDER_TIMEOUT);
   return () => settle(false);
 }
 
+function loadScript(src, onError) {
+  // already requested by another instance on the page: rely on the render timeout
+  if (document.querySelector(`script[src="${src}"]`)) return;
+  const script = document.createElement('script');
+  script.src = src;
+  script.async = true;
+  script.addEventListener('error', onError, { once: true });
+  document.head.append(script);
+}
+
 export default function decorate(block) {
-  const links = [...block.querySelectorAll('a[href]')];
-  let config = null;
-  links.some((a) => {
-    config = parseSprinklr(a.getAttribute('href'));
-    return !!config;
-  });
-  if (!config) config = fromEmbedId(block.textContent);
+  const rows = readRows(block);
+  const isStackla = block.classList.contains('stackla') || !!rows['data-id'];
+  const config = isStackla ? stacklaConfig(rows) : sprinklrConfig(block, rows);
 
   if (!config) {
     block.classList.add('is-empty');
@@ -97,28 +186,17 @@ export default function decorate(block) {
     return;
   }
 
-  const { clientId, embedId, src } = config;
-
-  // containers the Sprinklr script looks for by id
-  const controls = document.createElement('div');
-  controls.id = `sprinklr-embed-control-${clientId}-${embedId}`;
-  controls.className = 'swe_embed_controls';
-
-  const gallery = document.createElement('div');
-  gallery.id = `sprinklr-embed-${clientId}-${embedId}`;
-  gallery.className = 'swe_embed';
-  gallery.dataset.filterProduct = '';
-  gallery.dataset.filterVariant = '';
-
+  const fallback = buildFallback(findFallback(block, rows));
   const stage = document.createElement('div');
   stage.className = 'embed-social-stage is-loading';
-  stage.append(controls, gallery);
-  block.replaceChildren(stage);
-
   stage.setAttribute('aria-busy', 'true');
+  const gallery = buildContainers(config, stage);
+  block.replaceChildren(stage);
+  if (fallback) block.append(fallback);
+
   const load = () => {
-    const fail = watchGallery(block, stage, gallery);
-    loadScript(src, fail);
+    const fail = watchGallery(block, stage, gallery, fallback);
+    loadScript(config.src, fail);
   };
 
   if (!('IntersectionObserver' in window)) {
