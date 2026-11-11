@@ -65,3 +65,14 @@
     height: 800px;
   }
 }
+
+/* source: 40px vertical padding on mobile, 80px on desktop around the embed */
+.embed-designer-container {
+  padding-block: 40px;
+}
+
+@media (width >= 1024px) {
+  .embed-designer-container {
+    padding-block: 80px;
+  }
+}

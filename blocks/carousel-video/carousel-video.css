@@ -13,8 +13,9 @@
 .carousel-video .carousel-video-track {
   display: flex;
   gap: var(--carousel-gap);
-  margin: 0;
-  padding: 0;
+  margin: 0 calc(-1 * var(--section-padding-inline));
+  padding: 0 0 0 var(--section-padding-inline);
+  scroll-padding-inline: var(--section-padding-inline);
   list-style: none;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -325,5 +326,20 @@ body.carousel-video-player-open {
   .carousel-video .carousel-video-progress span {
     transform: none;
     transition: none;
+  }
+}
+
+/* section header from the source: title left, secondary CTA right on desktop */
+@media (width >= 1024px) {
+  .carousel-video-container .default-content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 32px;
+  }
+
+  .carousel-video-container .default-content-wrapper > * {
+    margin: 0;
   }
 }
