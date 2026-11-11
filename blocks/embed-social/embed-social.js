@@ -4,8 +4,6 @@ import { toClassName } from '../../scripts/aem.js';
 const SPRINKLR_RE = /^\/clients\/(\d+)\/embeds\/([^/]+)\/script\.js$/;
 const SPRINKLR_HOST = 'gallery.sprinklr.com';
 const DEFAULT_CLIENT_ID = '24392';
-// Stackla (Nosto UGC) fluid embed
-const STACKLA_SCRIPT = 'https://assets.stackla.com/media/js/widget/fluid-embed.js';
 
 // how long to wait for the third-party gallery to render before showing the fallback
 const RENDER_TIMEOUT = 10000;
@@ -69,16 +67,6 @@ function sprinklrConfig(block, rows) {
   };
 }
 
-function stacklaConfig(rows) {
-  const dataId = rows['data-id'] && rows['data-id'].text;
-  const hash = rows.hash && rows.hash.text;
-  if (!/^\d+$/.test(dataId || '') || !/^[A-Za-z0-9]+$/.test(hash || '')) return null;
-  const title = (rows.title && rows.title.text) || '';
-  return {
-    provider: 'stackla', src: STACKLA_SCRIPT, dataId, hash, title,
-  };
-}
-
 /**
  * Visible fallback: an authored "Fallback link" row, otherwise the first authored
  * link that is not the embed script itself (e.g. the Instagram profile link).
@@ -88,7 +76,7 @@ function findFallback(block, rows) {
   if (row && row.href) return { href: row.href, text: row.text || row.href };
   const a = [...block.querySelectorAll('a[href]')].find((link) => {
     const url = toUrl(link.getAttribute('href'));
-    return url && !parseSprinklrUrl(url.href) && url.href !== STACKLA_SCRIPT;
+    return url && !parseSprinklrUrl(url.href);
   });
   return a ? { href: a.getAttribute('href'), text: a.textContent.trim() || a.href } : null;
 }
@@ -114,15 +102,6 @@ function buildFallback(fallback) {
  * that will receive the rendered gallery.
  */
 function buildContainers(config, stage) {
-  if (config.provider === 'stackla') {
-    const widget = document.createElement('div');
-    widget.className = 'stackla-widget';
-    widget.dataset.id = config.dataId;
-    widget.dataset.hash = config.hash;
-    if (config.title) widget.dataset.title = config.title;
-    stage.append(widget);
-    return widget;
-  }
   const controls = document.createElement('div');
   controls.id = `sprinklr-embed-control-${config.clientId}-${config.embedId}`;
   controls.className = 'swe_embed_controls';
@@ -177,8 +156,7 @@ function loadScript(src, onError) {
 
 export default function decorate(block) {
   const rows = readRows(block);
-  const isStackla = block.classList.contains('stackla') || !!rows['data-id'];
-  const config = isStackla ? stacklaConfig(rows) : sprinklrConfig(block, rows);
+  const config = sprinklrConfig(block, rows);
 
   if (!config) {
     block.classList.add('is-empty');

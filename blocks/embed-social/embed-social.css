@@ -9,8 +9,7 @@
   background-color: var(--color-neutral-200);
 }
 
-.embed-social [id^="sprinklr-embed-"],
-.embed-social .stackla-widget {
+.embed-social [id^="sprinklr-embed-"] {
   width: 100%;
 }
 

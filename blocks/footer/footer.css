@@ -335,7 +335,7 @@ footer .footer-location-button {
   }
 
   footer .footer-bottom {
-    flex-direction: row;
+    flex-flow: row wrap;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
@@ -349,17 +349,17 @@ footer .footer-location-button {
   }
 
   footer .footer-legal-list {
-    flex-direction: row;
+    flex-flow: row wrap;
     align-items: center;
-    gap: 40px;
+    gap: 16px 40px;
     padding: 8px 0;
     text-align: left;
   }
 
   footer .footer-bottom .footer-utility ul {
-    flex-direction: row;
+    flex-flow: row wrap;
     justify-content: flex-end;
-    gap: 32px;
+    gap: 16px 32px;
   }
 
   footer .footer-utility-pill a:any-link,
