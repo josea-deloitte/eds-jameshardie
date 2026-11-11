@@ -798,6 +798,8 @@ header .nav-location-submit:not(:disabled):hover {
     justify-content: flex-end;
     margin-bottom: 4px;
     padding: 8px 80px;
+    background-color: transparent;
+    color: inherit;
   }
 
   /* utility bar: light text on the dark bar, links instead of pills */
