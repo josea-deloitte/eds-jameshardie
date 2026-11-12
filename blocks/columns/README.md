@@ -22,6 +22,9 @@ Add in the header: `Columns (alternate)`.
 | `video` | A cell with an MP4/WebM link (plus an optional picture as poster) becomes a video with controls; never autoplays |
 | `alternate` | Image side flips on every second row on desktop |
 | `split-3-1` | First cell takes three quarters, second one quarter |
+| `rounded` | Image gets the large rounded corners used on the conversion band |
+
+Buttons inside Columns (bold or italic links) always render at the large 48px height.
 
 ## 4. Formatting rules
 - Images: at least 1000px wide; add alt text.

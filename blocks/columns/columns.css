@@ -24,6 +24,16 @@
   display: block;
 }
 
+/* CTAs inside columns use the large (48px) button, as on the source conversion band */
+.columns .button {
+  min-height: var(--button-height-lg);
+}
+
+/* rounded: media with the source's large corner radius (conversion band) */
+.columns.rounded > div > .columns-img-col img {
+  border-radius: var(--radius-media);
+}
+
 /* eyebrow: small caps label above the heading */
 .columns .columns-eyebrow {
   margin-bottom: 8px;
