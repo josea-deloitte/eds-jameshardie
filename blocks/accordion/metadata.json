@@ -1,0 +1,21 @@
+{
+  "variantName": "accordion",
+  "baseBlock": "accordion",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "expandable question-and-answer list with plus/minus toggles",
+    "description": "Stack of items separated by 1px light-grey dividers; bold question with a green plus icon that becomes a minus when open; rich answer text below. Fills the width of its column, so it works in a full-width section or a 3/4 column."
+  },
+  "contentPattern": {
+    "structure": "One row per item. Cell 1: question (plain text). Cell 2: answer (paragraphs, lists, links). Rows with both cells empty are ignored; a missing answer cell gives an item with an empty panel",
+    "description": "Question \"What are the benefits of fiber cement siding?\" | Answer paragraphs with optional lists and links"
+  },
+  "options": [
+    "open-first",
+    "exclusive"
+  ],
+  "memberVariantIds": [],
+  "sourceUrl": "https://www.jameshardie.com/faq",
+  "usage": "Use for FAQ lists and installation Q&A sections.",
+  "reuseGuidance": "Use open-first to show the first answer on load; use exclusive when only one answer should stay open."
+}

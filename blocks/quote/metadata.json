@@ -1,0 +1,18 @@
+{
+  "variantName": "quote",
+  "baseBlock": "quote",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "customer or contractor testimonial with portrait, quotation and attribution",
+    "description": "Portrait image on the left and bold quotation on the right at 1024px and wider, stacked on mobile. Author name in green bold, role below in grey. Background comes from the section style."
+  },
+  "contentPattern": {
+    "structure": "Row 1: portrait image (optional). Row 2: quotation as one paragraph. Row 3: author name on the first line, role or company on the second line",
+    "description": "Portrait of John Schiegg | We've built our reputation on building high-quality homes... | John Schiegg / Builder"
+  },
+  "options": [],
+  "memberVariantIds": [],
+  "sourceUrl": "https://www.jameshardie.com/build-with-hardie",
+  "usage": "Use for a single testimonial on landing pages such as Build with Hardie.",
+  "reuseGuidance": "Pair with a beige or light section style; for several testimonials use separate quote blocks or a carousel."
+}

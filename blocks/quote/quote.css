@@ -1,0 +1,82 @@
+.quote .quote-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0;
+}
+
+.quote .quote-image {
+  flex: 0 0 auto;
+}
+
+.quote .quote-image picture,
+.quote .quote-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+}
+
+.quote .quote-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  min-width: 0;
+}
+
+.quote .quote-text {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--heading-color);
+  font-size: var(--heading-font-size-m);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.quote .quote-text > :first-child {
+  margin-top: 0;
+}
+
+.quote .quote-text > :last-child {
+  margin-bottom: 0;
+}
+
+.quote .quote-author {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--body-font-size-m);
+  line-height: var(--heading-line-height-xs);
+}
+
+.quote .quote-author-name {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.quote .quote-author-role {
+  color: var(--paragraph-color);
+}
+
+@media (width >= 1024px) {
+  .quote .quote-figure {
+    flex-direction: row;
+    align-items: center;
+    gap: 64px;
+  }
+
+  .quote .quote-image {
+    flex-basis: 33%;
+    max-width: 400px;
+  }
+
+  .quote .quote-text {
+    font-size: var(--heading-font-size-l);
+    line-height: 1.3;
+  }
+}

@@ -1,7 +1,7 @@
 # Hero Video
 
 ## 1. Purpose and where it is used
-Full-bleed hero with a muted, looping background video, a poster image, a dark overlay, headline, text and a button, plus a pause/play button. Used at the top of the home page ("Design an exterior you'll love coming home to", button "Start your design"). Use the Hero block for a static image.
+Hero (up to 1440px wide, centered, 710px tall on desktop) with a muted, looping background video, a poster image, a dark overlay, headline, text and a button, plus a pause/play button. Used at the top of the home page ("Design an exterior you'll love coming home to", button "Start your design"). Use the Hero block for a static image.
 
 ## 2. DA table structure
 Header row: `Hero Video`.

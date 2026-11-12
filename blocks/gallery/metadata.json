@@ -1,0 +1,20 @@
+{
+  "variantName": "gallery",
+  "baseBlock": "gallery",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "responsive image grid; each image opens in an accessible lightbox with previous/next navigation",
+    "description": "2 columns on mobile, 3 on tablet, 4 on desktop (1024px and up). The featured variant makes the first image span 2x2. Clicking an image opens a full-screen dialog with large image, optional caption and link, previous/next and close buttons. Section heading and CTA are default content in the section, not part of the block."
+  },
+  "contentPattern": {
+    "structure": "One row per image. Cell content: picture (required), caption text (optional plain paragraph), link (optional, shown in the lightbox)",
+    "description": "Gallery rows with an image each, e.g. Where inspiration meets design on start-your-siding-project (12 images, first one featured); heading and large CTA Browse images sit above and below the block as default content"
+  },
+  "options": [
+    "featured"
+  ],
+  "memberVariantIds": [],
+  "sourceUrl": "https://www.jameshardie.com/start-your-siding-project",
+  "usage": "Use for inspiration or project photo grids that should open larger.",
+  "reuseGuidance": "For linked image tiles that navigate away use Cards; for a scrolling strip use a carousel."
+}
