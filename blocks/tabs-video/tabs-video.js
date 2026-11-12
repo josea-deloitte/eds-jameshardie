@@ -1,12 +1,9 @@
 import { toClassName } from '../../scripts/aem.js';
+import { prefersReducedMotion } from '../../scripts/motion.js';
 
 const VIDEO_RE = /\.(mp4|webm|ogg|ogv|mov|m4v)([?#]|$)/i;
 
 let tabsId = 0;
-
-function prefersReducedMotion() {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
 
 function removeWithEmptyParents(el, stop) {
   let node = el;

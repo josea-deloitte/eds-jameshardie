@@ -11,6 +11,9 @@ import {
   loadCSS,
   buildBlock,
 } from './aem.js';
+import {
+  toAbsoluteUrl, dedupeKeywords, buildOrganization, buildWebSite, buildBreadcrumb, buildArticle,
+} from './seo.js';
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   const innerTT = window.trustedTypes.createPolicy('tt-inner', {
@@ -156,6 +159,55 @@ export function decorateMain(main) {
 }
 
 /**
+ * Head metadata fixes and JSON-LD structured data (Organization, WebSite,
+ * BreadcrumbList and, for article pages, Article).
+ */
+function decorateSeo() {
+  const meta = (attr, name) => document.head.querySelector(`meta[${attr}="${name}"]`);
+  const here = window.location.href;
+
+  ['og:image', 'twitter:image'].forEach((name) => {
+    const tag = meta(name.startsWith('og:') ? 'property' : 'name', name);
+    if (tag) tag.content = toAbsoluteUrl(tag.content, here) || tag.content;
+  });
+
+  const keywords = meta('name', 'keywords');
+  if (keywords) keywords.content = dedupeKeywords(keywords.content);
+
+  const ogImage = meta('property', 'og:image');
+  if (ogImage && !meta('property', 'og:image:alt')) {
+    const alt = document.querySelector('main img[alt]:not([alt=""])');
+    const tag = document.createElement('meta');
+    tag.setAttribute('property', 'og:image:alt');
+    tag.content = (alt && alt.alt) || document.title;
+    document.head.append(tag);
+  }
+
+  const read = (attr, name) => (meta(attr, name) || {}).content || '';
+  const data = [
+    buildOrganization(),
+    buildWebSite(),
+    buildBreadcrumb(window.location.pathname, document.title),
+  ];
+  if (read('property', 'og:type') === 'article') {
+    data.push(buildArticle({
+      headline: read('property', 'og:title') || document.title,
+      description: read('name', 'description'),
+      image: read('property', 'og:image'),
+      url: here,
+      published: read('name', 'publication-date'),
+      modified: read('name', 'modified-time'),
+    }));
+  }
+  data.filter(Boolean).forEach((item) => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(item);
+    document.head.append(script);
+  });
+}
+
+/**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
@@ -194,6 +246,7 @@ async function loadLazy(doc) {
   if (hash && element) element.scrollIntoView();
 
   loadFooter(doc.querySelector('body > footer'));
+  decorateSeo();
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();

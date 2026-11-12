@@ -1,11 +1,9 @@
+import { prefersReducedMotion } from '../../scripts/motion.js';
+
 const VIDEO_RE = /\.(mp4|webm|ogg|ogv|mov|m4v)([?#]|$)/i;
 
 function isVideoLink(a) {
   return !!a && VIDEO_RE.test(a.getAttribute('href') || '');
-}
-
-function prefersReducedMotion() {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 /**

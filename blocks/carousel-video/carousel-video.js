@@ -1,4 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
+import { prefersReducedMotion } from '../../scripts/motion.js';
 
 const BLOCK = 'carousel-video';
 const VIDEO_RE = /\.(mp4|webm|ogg|ogv|mov|m4v)([?#]|$)/i;
@@ -26,7 +27,7 @@ function bindCarousel(block, track) {
     const list = slides();
     if (!list.length) return;
     const target = Math.max(0, Math.min(list.length - 1, currentIndex() + dir));
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduceMotion = prefersReducedMotion();
     track.scrollTo({ left: offsetOf(list[target]), behavior: reduceMotion ? 'auto' : 'smooth' });
   };
 
